@@ -1,4 +1,4 @@
-from autoconnect.ConnectionAttempt import ConnectionAttempt
+from ConnectionAttempt import ConnectionAttempt
 from scapy.all import *
 
 
@@ -8,8 +8,7 @@ class DHCPAttempt(ConnectionAttempt):
         pass
 
     def connect(self):
-        localiface = 'lo'
-        myhostname = 'autoconnect'
+        localiface = 'wlp2s0'
         localmac = get_if_hwaddr(localiface)
         print(localmac)
 
@@ -18,4 +17,6 @@ class DHCPAttempt(ConnectionAttempt):
             dport=67, sport=68) / BOOTP(chaddr=localmac, xid=RandInt()) / DHCP(
             options=[('message-type', 'discover'), 'end'])
         print(dhcp_discover.display())
-        dhcp_offer = srp1(dhcp_discover, iface=localiface)
+        #dhcp_offer = srp1(dhcp_discover, iface=localiface)
+
+        #print(dhcp_offer.display())

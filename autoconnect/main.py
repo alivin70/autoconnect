@@ -1,4 +1,4 @@
-from autoconnect.DHCPAttempt import DHCPAttempt
+from DHCPAttempt import DHCPAttempt
 
 dhcpAttempt = DHCPAttempt()
 
