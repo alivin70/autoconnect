@@ -67,8 +67,7 @@ class DHCPAttempt(ConnectionAttempt):
             broadcastAddress = self.getDhcpOption(dhcpOptions, 'broadcast_address')
             router = self.getDhcpOption(dhcpOptions, 'router')
             dnsServer = self.getDhcpOption(dhcpOptions, 'name_server')
-
-        print(subnet_mask, broadcastAddress, router, dnsServer)
-        setupInterface(self.interface, myIpAddress, subnet_mask)
-        setupDefaultGateway(router)
-        setupDns(dnsServer)
+            print(subnet_mask, broadcastAddress, router, dnsServer)
+            setupInterface(self.interface, myIpAddress, subnet_mask)
+            setupDefaultGateway(router)
+            setupDns(dnsServer)
