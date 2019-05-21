@@ -1,22 +1,22 @@
 class ARPTableEntry:
-    def __init__(self, ipaddress, macaddress):
-        self.ipaddress = ipaddress
-        self.macaddress = macaddress
-        self.count = 0
+    def __init__(self, ip_address, mac_address):
+        self.ip_address = ip_address
+        self.mac_address = mac_address
+        self.count = 1
 
 
 class ARPTable:
     def __init__(self):
         self.table = {}
 
-    def addOrUpdateEntry(self, ipaddress, macaddress):
-        entry = self.table.get(ipaddress)
+    def add_or_update_entry(self, ip_address, mac_address):
+        entry = self.table.get(ip_address)
         if entry is None:
-            self.table[ipaddress] = ARPTableEntry(ipaddress, macaddress)
+            self.table[ip_address] = ARPTableEntry(ip_address, mac_address)
         else:
-            if macaddress != '00:00:00:00:00:00' and entry.macaddress != '00:00:00:00:00:00':
-                entry.macaddress = macaddress
+            if mac_address != '00:00:00:00:00:00' and entry.mac_address != '00:00:00:00:00:00':
+                entry.mac_address = mac_address
             entry.count += 1
 
-    def contains(self, ipaddress):
-        return ipaddress in self.table
+    def contains(self, ip_address):
+        return ip_address in self.table
