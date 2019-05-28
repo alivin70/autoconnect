@@ -1,6 +1,7 @@
 from ConnectionAttempt import ConnectionAttempt
 from RARPTable import *
 from scapy.all import *
+from ipaddress import *
 
 
 class MonitorAttempt(ConnectionAttempt):
@@ -8,17 +9,80 @@ class MonitorAttempt(ConnectionAttempt):
     def __init__(self, interface):
         ConnectionAttempt.__init__(self, interface)
         self.rarp_table = RARPTable()
+        self.packets = None
+        self.gateway_ip = None
+        self.gateway_mac = None
+        self.acc_and = 0xffffffff
+        self.acc_or = 0x00000000
+        self.network = None
+        self.ignore_ip = {'0.0.0.0', '192.168.1.1', '192.168.1.49', '160.97.146.123', '160.97.144.1', '160.97.147.90',
+                         '160.97.144.3', '160.97.146.99', '160.97.145.57', '160.97.145.18', '160.97.146.217',
+                         '160.97.147.0', '160.97.146.19', '160.97.144.2', '160.97.146.1', '160.97.145.172',
+                         '160.97.144.32', '160.97.144.224', '160.97.147.136', '160.97.146.205'}
 
     def connect(self):
         self.sniff()
-        for ip in self.rarp_table.table:
-            print(ip + "    ->      ", end='')
-            for entry in self.rarp_table.table[ip]:
-                print(entry.ip_address, entry.in_arp)
+        # self.rarp_table.print()
+        self.find_gateway()
+        self.network_discover()
+        print("Default gateway: " + str(self.gateway_ip))
+        print("Network: " + str(self.network))
+
+    def network_discover(self):
+        for pkt in self.packets:
+            if ARP in pkt:
+                ip_src = pkt[ARP].psrc
+                if ip_src not in self.ignore_ip:
+                    self.add_ip(ip_src)
+                ip_dst = pkt[ARP].pdst
+                if ip_dst not in self.ignore_ip:
+                    self.add_ip(ip_dst)
+            elif TCP in pkt:
+                mac_src = pkt[Ether].src
+                mac_dst = pkt[Ether].dst
+                if mac_src == self.gateway_mac:
+                    ip_dst = pkt[IP].dst
+                    self.add_ip(ip_dst)
+                elif mac_dst == self.gateway_mac:
+                    ip_src = pkt[IP].src
+                    self.add_ip(ip_src)
+
+        net_address = self.acc_and & self.acc_or
+        subnet_mask = self.acc_and ^ self.acc_or
+        subnet_mask = 0xffffffff - subnet_mask
+
+        net_address_str = str(IPv4Address(net_address))
+        net_address_str += "/" + str(IPv4Address(subnet_mask))
+
+        self.network = IPv4Network(net_address_str)
+
+    def add_ip(self, ip_addr):
+        ip = int(IPv4Address(ip_addr))
+        self.acc_and &= ip
+        self.acc_or |= ip
+
+    def find_gateway(self):
+        max_count = 0
+        max_mac = None
+        for mac in self.rarp_table.table:
+            size = len(self.rarp_table.table[mac])
+            if size >= max_count:
+                max_count = size
+                max_mac = mac
+        if max_mac is not None:
+            self.set_gateway(max_mac)
+            self.gateway_mac = max_mac
+
+    def set_gateway(self, max_mac):
+        for entry in self.rarp_table.table[max_mac]:
+            if entry.in_arp:
+                self.gateway_ip = IPv4Address(entry.ip_address)
+                return
 
     def sniff(self):
-        packets = sniff(filter="arp", prn = self.pkt_process,
+        self.packets = sniff(filter="arp || tcp", prn=self.pkt_process,
                         offline="/home/nigre/Documents/Thesis/wiresharkcap-root.pcapng")
+        # packets = sniff(filter="arp || tcp", prn=self.pkt_process, count=100)
 
     def pkt_process(self, pkt):
         if ARP in pkt:
@@ -37,4 +101,9 @@ class MonitorAttempt(ConnectionAttempt):
             self.rarp_table.add_entry(mac_dst, ip_dst, True)
 
     def tcp_process(self, pkt):
-        pass
+        ip_src = pkt[IP].src
+        mac_src = pkt[Ether].src
+        self.rarp_table.add_entry(mac_src, ip_src, False)
+        ip_dst = pkt[IP].dst
+        mac_dst = pkt[Ether].dst
+        self.rarp_table.add_entry(mac_dst, ip_dst, False)

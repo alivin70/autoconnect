@@ -24,3 +24,10 @@ class RARPTable:
             s = self.table[mac_address]
             s.add(RARPTableEntry(ip_address, in_arp))
 
+    def print(self):
+        for mac in self.table:
+            print(mac + "    ->      ", end='')
+            for entry in self.table[mac]:
+                print(entry.ip_address, entry.in_arp, end=' ')
+            print()
+

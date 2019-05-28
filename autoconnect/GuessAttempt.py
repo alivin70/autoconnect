@@ -20,9 +20,7 @@ class GuessAttempt(ConnectionAttempt):
 
     def connect(self):
         self.sniff()
-        # for entry in self.arp_table.table:
-        #     print(self.arp_table.table[entry].ip_address + "\t" + self.arp_table.table[entry].mac_address + "\t" +
-        #           str(self.arp_table.table[entry].count))
+        self.arp_table.print()
         self.network_discover()
         self.find_gateway()
         print("Network: " + str(self.network))
@@ -48,7 +46,7 @@ class GuessAttempt(ConnectionAttempt):
             if self.arp_table.table[entry].count > max_count:
                 max_count = self.arp_table.table[entry].count
                 gateway = self.arp_table.table[entry].ip_address
-        self.gateway = ip_address(gateway)
+        self.gateway = IPv4Address(gateway)
 
     def find_ip(self):
         free_ip = None
@@ -90,7 +88,7 @@ class GuessAttempt(ConnectionAttempt):
         mac_src = pkt[ARP].hwsrc
         if ip_src not in self.ignore_ip:
             self.arp_table.add_or_update_entry(ip_src, mac_src)
-            self.add_ip(pkt[ARP].psrc)
+            self.add_ip(ip_src)
         ip_dst = pkt[ARP].pdst
         mac_dst = pkt[ARP].hwdst
         if ip_dst not in self.ignore_ip:
