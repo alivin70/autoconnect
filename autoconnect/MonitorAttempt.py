@@ -15,6 +15,7 @@ class MonitorAttempt(ConnectionAttempt):
         self.acc_and = 0xffffffff
         self.acc_or = 0x00000000
         self.network = None
+        self.ip = None
         self.ignore_ip = {'0.0.0.0', '192.168.1.1', '192.168.1.49', '160.97.146.123', '160.97.144.1', '160.97.147.90',
                          '160.97.144.3', '160.97.146.99', '160.97.145.57', '160.97.145.18', '160.97.146.217',
                          '160.97.147.0', '160.97.146.19', '160.97.144.2', '160.97.146.1', '160.97.145.172',
@@ -27,6 +28,8 @@ class MonitorAttempt(ConnectionAttempt):
         self.network_discover()
         print("Default gateway: " + str(self.gateway_ip))
         print("Network: " + str(self.network))
+        self.find_ip()
+        print("IP address: " + str(self.ip))
 
     def network_discover(self):
         for pkt in self.packets:
@@ -78,6 +81,30 @@ class MonitorAttempt(ConnectionAttempt):
             if entry.in_arp:
                 self.gateway_ip = IPv4Address(entry.ip_address)
                 return
+
+    def find_ip(self):
+        free_ip = None
+        hosts = list(self.network.hosts())
+        tmp_ip = hosts[random.randint(0, len(hosts))]
+        print(tmp_ip)
+        for ip in hosts:
+            ip_dst = str(ip)
+            print(ip_dst)
+            arp_request = self.make_arp_request(tmp_ip, ip_dst)
+            arp_reply = srp1(arp_request, timeout=3, verbose=0)
+            if arp_reply is not None:
+                print(arp_reply.display())
+            else:
+                free_ip = ip
+                break
+        self.ip = free_ip
+
+    def make_arp_request(self, ip_src, ip_dst):
+        ether = Ether(dst="ff:ff:ff:ff:ff:ff", src=self.mac_address)
+        arp = ARP(op=1, hwsrc=self.mac_address, psrc=ip_src,
+                  hwdst="ff:ff:ff:ff:ff:ff", pdst=ip_dst)
+        pkt = ether / arp
+        return pkt
 
     def sniff(self):
         self.packets = sniff(filter="arp || tcp", prn=self.pkt_process,

@@ -13,6 +13,7 @@ class GuessAttempt(ConnectionAttempt):
         self.acc_or = 0x00000000
         self.network = None
         self.gateway = None
+        self.ip = None
         self.ignore_ip = {'0.0.0.0', '192.168.1.1', '192.168.1.49', '160.97.146.123', '160.97.144.1', '160.97.147.90',
                          '160.97.144.3', '160.97.146.99', '160.97.145.57', '160.97.145.18', '160.97.146.217',
                          '160.97.147.0', '160.97.146.19', '160.97.144.2', '160.97.146.1', '160.97.145.172',
@@ -25,8 +26,8 @@ class GuessAttempt(ConnectionAttempt):
         self.find_gateway()
         print("Network: " + str(self.network))
         print("Default gateway: " + str(self.gateway))
-        ip = self.find_ip()
-        print("IP address: " + str(ip))
+        self.find_ip()
+        print("IP address: " + str(self.ip))
 
     def network_discover(self):
         # TODO Fix subnet_mask in case of ones after the first zero.
@@ -64,7 +65,7 @@ class GuessAttempt(ConnectionAttempt):
                 else:
                     free_ip = ip
                     break
-        return free_ip
+        self.ip = free_ip
 
     def make_arp_request(self, ip_src, ip_dst):
         ether = Ether(dst="ff:ff:ff:ff:ff:ff", src=self.mac_address)
