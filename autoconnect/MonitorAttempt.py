@@ -107,9 +107,9 @@ class MonitorAttempt(ConnectionAttempt):
         return pkt
 
     def sniff(self):
-        self.packets = sniff(filter="arp || tcp", prn=self.pkt_process,
-                        offline="/home/nigre/Documents/Thesis/wiresharkcap-root.pcapng")
-        # packets = sniff(filter="arp || tcp", prn=self.pkt_process, count=100)
+        # self.packets = sniff(filter="arp || tcp", prn=self.pkt_process,
+        #                 offline="/home/nigre/Documents/Thesis/wiresharkcap-root.pcapng")
+        packets = sniff(filter="arp || tcp", prn=self.pkt_process, count=100)
 
     def pkt_process(self, pkt):
         if ARP in pkt:

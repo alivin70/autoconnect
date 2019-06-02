@@ -77,6 +77,7 @@ class GuessAttempt(ConnectionAttempt):
     def sniff(self):
         packets = sniff(filter="arp", prn = self.arp_process,
                         offline="/home/nigre/Documents/Thesis/wiresharkcap-root.pcapng")
+        # packets = sniff(filter="arp", prn=self.arp_process, count=100)
 
     def add_ip(self, ip_addr):
         ip = int(IPv4Address(ip_addr))
