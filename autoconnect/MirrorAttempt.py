@@ -4,7 +4,7 @@ from scapy.all import *
 from ipaddress import *
 
 
-class MonitorAttempt(ConnectionAttempt):
+class MirrorAttempt(ConnectionAttempt):
 
     def __init__(self, interface):
         ConnectionAttempt.__init__(self, interface)

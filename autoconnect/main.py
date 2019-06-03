@@ -1,6 +1,6 @@
 from DHCPAttempt import DHCPAttempt
 from GuessAttempt import GuessAttempt
-from MonitorAttempt import MonitorAttempt
+from MirrorAttempt import MirrorAttempt
 from scapy.arch.linux import get_if_list
 from requests import *
 from CaptivePortalHandler import CaptivePortalHandler
@@ -11,8 +11,8 @@ from CaptivePortalHandler import CaptivePortalHandler
 # guessAttempt = GuessAttempt('wlp2s0')
 # guessAttempt.connect()
 
-# monitorAttempt = MonitorAttempt('wlp2s0')
-# monitorAttempt.connect()
+# mirrorAttempt = MirrorAttempt('wlp2s0')
+# mirrorAttempt.connect()
 
 # TODO Check for connection
 
