@@ -2,7 +2,7 @@ from requests import *
 from AdvancedHTMLParser import *
 
 
-class CaptivePortalHandler:
+class ZeroShellCaptivePortal:
 
     def __init__(self):
         self.username_field_name = None

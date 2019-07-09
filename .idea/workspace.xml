@@ -2,15 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="540d14be-43a4-44b9-a9ee-b64d5552fffd" name="Default Changelist" comment="Completed DHCP transaction">
-      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/autoconnect/MonitorAttempt.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/autoconnect/RARPTable.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/autoconnect/TransferProject.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/thesis.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/thesis.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/autoconnect/WifiDogCaptivePortal.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/autoconnect/resources/credentials" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autoconnect/CaptivePortalHandler.py" beforeDir="false" afterPath="$PROJECT_DIR$/autoconnect/ZeroShellCaptivePortal.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autoconnect/TransferProject.py" beforeDir="false" afterPath="$PROJECT_DIR$/autoconnect/TransferProject.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/autoconnect/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/autoconnect/main.py" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/venv/" />
@@ -35,41 +31,7 @@
     <select />
   </component>
   <component name="FileEditorManager">
-    <leaf>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/autoconnect/MonitorAttempt.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="345">
-              <caret line="35" column="18" selection-start-line="35" selection-start-column="18" selection-end-line="35" selection-end-column="18" />
-              <folding>
-                <element signature="e#0#47#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/autoconnect/RARPTable.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state>
-              <caret line="3" column="7" selection-start-line="3" selection-start-column="7" selection-end-line="3" selection-end-column="7" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/autoconnect/main.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="266">
-              <caret line="14" lean-forward="true" selection-start-line="14" selection-end-line="14" />
-              <folding>
-                <element signature="e#0#35#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300" />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -90,30 +52,37 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/autoconnect/TransferProject.py" />
         <option value="$PROJECT_DIR$/autoconnect/ArpTable.py" />
         <option value="$PROJECT_DIR$/autoconnect/ConnectionAttempt.py" />
         <option value="$PROJECT_DIR$/autoconnect/Interface.py" />
         <option value="$PROJECT_DIR$/autoconnect/DHCPAttempt.py" />
         <option value="$PROJECT_DIR$/autoconnect/Util.py" />
-        <option value="$PROJECT_DIR$/autoconnect/GuessAttempt.py" />
-        <option value="$PROJECT_DIR$/autoconnect/main.py" />
-        <option value="$PROJECT_DIR$/autoconnect/ARPTable.py" />
         <option value="$PROJECT_DIR$/autoconnect/RARPTable.py" />
+        <option value="$PROJECT_DIR$/autoconnect/ARPTable.py" />
         <option value="$PROJECT_DIR$/autoconnect/MonitorAttempt.py" />
+        <option value="$PROJECT_DIR$/autoconnect/GuessAttempt.py" />
+        <option value="$PROJECT_DIR$/autoconnect/TransferProject.py" />
+        <option value="$PROJECT_DIR$/autoconnect/MirrorAttempt.py" />
+        <option value="$PROJECT_DIR$/autoconnect/CaptivePortalHandler.py" />
+        <option value="$PROJECT_DIR$/autoconnect/ZeroShellCaptivePortal.py" />
+        <option value="$PROJECT_DIR$/autoconnect/main.py" />
+        <option value="$PROJECT_DIR$/autoconnect/resources/credentials" />
+        <option value="$PROJECT_DIR$/autoconnect/WifiDogCaptivePortal.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="y" value="25" />
-    <option name="width" value="960" />
-    <option name="height" value="990" />
+    <option name="x" value="-89" />
+    <option name="y" value="46" />
+    <option name="width" value="1440" />
+    <option name="height" value="741" />
   </component>
   <component name="ProjectView">
     <navigator proportions="" version="1">
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -130,13 +99,12 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="settings.editor.selected.configurable" value="preferences.keymap" />
+    <property name="settings.editor.selected.configurable" value="preferences.sourceCode" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -150,7 +118,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.main">
+  <component name="RunManager" selected="Python.TransferProject">
     <configuration name="DHCPAttempt" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <module name="thesis" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -219,8 +187,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.main" />
         <item itemvalue="Python.TransferProject" />
+        <item itemvalue="Python.main" />
         <item itemvalue="Python.DHCPAttempt" />
       </list>
     </recent_temporary>
@@ -259,7 +227,29 @@
       <workItem from="1558787694217" duration="13657000" />
       <workItem from="1558875862210" duration="81000" />
       <workItem from="1558876980824" duration="6999000" />
-      <workItem from="1558904575916" duration="1626000" />
+      <workItem from="1558904575916" duration="2239000" />
+      <workItem from="1558943388684" duration="1333000" />
+      <workItem from="1558953759084" duration="629000" />
+      <workItem from="1558959597676" duration="2350000" />
+      <workItem from="1558967585932" duration="21000" />
+      <workItem from="1558968077397" duration="138000" />
+      <workItem from="1558968687833" duration="24000" />
+      <workItem from="1558974243554" duration="5855000" />
+      <workItem from="1559051391448" duration="2653000" />
+      <workItem from="1559068089602" duration="5510000" />
+      <workItem from="1559137269698" duration="16000" />
+      <workItem from="1559212194178" duration="882000" />
+      <workItem from="1559213465692" duration="272000" />
+      <workItem from="1559219517419" duration="2369000" />
+      <workItem from="1559395250584" duration="4119000" />
+      <workItem from="1559404723283" duration="7734000" />
+      <workItem from="1559468259211" duration="13846000" />
+      <workItem from="1559557509861" duration="41000" />
+      <workItem from="1559557573939" duration="94000" />
+      <workItem from="1559566221394" duration="7484000" />
+      <workItem from="1559653240714" duration="2787000" />
+      <workItem from="1560171733712" duration="1022000" />
+      <workItem from="1562661518710" duration="16069000" />
     </task>
     <task id="LOCAL-00001" summary="DHCPAttempt">
       <created>1557929114811</created>
@@ -324,11 +314,53 @@
       <option name="project" value="LOCAL" />
       <updated>1558806969132</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="Completed DHCP transaction">
+      <created>1558906291120</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1558906291120</updated>
+    </task>
+    <task id="LOCAL-00011" summary="Added net discover MonitorAttempt">
+      <created>1559053889213</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1559053889213</updated>
+    </task>
+    <task id="LOCAL-00012" summary="Added ip finder in MonitorAttempt">
+      <created>1559116707037</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1559116707037</updated>
+    </task>
+    <task id="LOCAL-00013" summary="Added CaptivePortalHandler for ZeroShell">
+      <created>1559493986276</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1559493986276</updated>
+    </task>
+    <task id="LOCAL-00014" summary="Added input fields detection in CaptivePortalHandler">
+      <created>1559574861137</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1559574861137</updated>
+    </task>
+    <task id="LOCAL-00015" summary="Added credentials to captive portal">
+      <created>1559666482111</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1559666482111</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="94242000" />
+    <option name="totallyTimeSpent" value="170103000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -341,14 +373,13 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="25" width="1920" height="990" extended-state="6" />
-    <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.18516542" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.18729989" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.329849" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.31823462" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.4994664" visible="true" weight="0.2857143" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.39953542" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -356,9 +387,9 @@
       <window_info anchor="bottom" id="Docker" order="7" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="8" weight="0.32948583" />
       <window_info anchor="bottom" id="Database Changes" order="9" />
-      <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
-      <window_info anchor="bottom" id="Terminal" order="11" weight="0.32948583" />
-      <window_info anchor="bottom" id="Python Console" order="12" weight="0.32948583" />
+      <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.50053364" side_tool="true" weight="0.2857143" />
+      <window_info anchor="bottom" id="Terminal" order="11" weight="0.32752612" />
+      <window_info anchor="bottom" id="Python Console" order="12" weight="0.32868758" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -372,18 +403,23 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="DHCPAttempt" />
     <MESSAGE value="Fix DHCPAttempt" />
-    <MESSAGE value="Completed DHCP transaction" />
     <MESSAGE value="Added interface setting" />
     <MESSAGE value="Added arp process" />
     <MESSAGE value="Added inference of network address and subnet mask in GuessAttempt" />
     <MESSAGE value="Added free ip address finder in GuessAttempt" />
     <MESSAGE value="Removed Util module" />
-    <option name="LAST_COMMIT_MESSAGE" value="Removed Util module" />
+    <MESSAGE value="Completed DHCP transaction" />
+    <MESSAGE value="Added net discover MonitorAttempt" />
+    <MESSAGE value="Added ip finder in MonitorAttempt" />
+    <MESSAGE value="Added CaptivePortalHandler for ZeroShell" />
+    <MESSAGE value="Added input fields detection in CaptivePortalHandler" />
+    <MESSAGE value="Added credentials to captive portal" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added credentials to captive portal" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/thesis$main.coverage" NAME="main Coverage Results" MODIFIED="1558906203656" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/autoconnect" />
+    <SUITE FILE_PATH="coverage/thesis$main.coverage" NAME="main Coverage Results" MODIFIED="1559471668679" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/autoconnect" />
     <SUITE FILE_PATH="coverage/thesis$DHCPAttempt.coverage" NAME="DHCPAttempt Coverage Results" MODIFIED="1558110666542" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/autoconnect" />
-    <SUITE FILE_PATH="coverage/thesis$TransferProject.coverage" NAME="TransferProject Coverage Results" MODIFIED="1558191706185" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/autoconnect" />
+    <SUITE FILE_PATH="coverage/thesis$TransferProject.coverage" NAME="TransferProject Coverage Results" MODIFIED="1562687199396" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/autoconnect" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file:///home/nigre/.local/lib/python3.6/site-packages/scapy/arch/windows/__init__.py">
@@ -403,20 +439,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/autoconnect/TransferProject.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="9" lean-forward="true" selection-start-column="9" selection-end-column="9" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/autoconnect/Interface.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="285">
-          <caret line="15" column="8" selection-start-line="15" selection-start-column="8" selection-end-line="15" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file:///home/nigre/.local/lib/python3.6/site-packages/scapy/sendrecv.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-1432">
@@ -425,12 +447,43 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/autoconnect/Util.py" />
-    <entry file="file://$PROJECT_DIR$/autoconnect/ConnectionAttempt.py">
+    <entry file="file://$PROJECT_DIR$/autoconnect/__init__.py">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/autoconnect/ARPTable.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="228">
-          <caret line="12" column="19" lean-forward="true" selection-start-line="12" selection-start-column="19" selection-end-line="12" selection-end-column="19" />
+        <state relative-caret-position="361">
+          <caret line="19" lean-forward="true" selection-start-line="19" selection-end-line="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/autoconnect/RARPTable.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="570">
+          <caret line="30" column="29" selection-start-line="30" selection-start-column="29" selection-end-line="30" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/autoconnect/Interface.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="57">
+          <caret line="3" column="56" lean-forward="true" selection-start-line="3" selection-start-column="56" selection-end-line="3" selection-end-column="56" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///usr/lib/python3.6/html/parser.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-779">
+          <caret line="62" column="6" selection-start-line="62" selection-start-column="6" selection-end-line="62" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/autoconnect/MirrorAttempt.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-2059">
+          <caret line="6" column="12" selection-start-line="6" selection-start-column="12" selection-end-line="6" selection-end-column="12" />
           <folding>
-            <element signature="e#0#35#0" expanded="true" />
+            <element signature="e#0#47#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -445,49 +498,73 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/autoconnect/__init__.py">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/autoconnect/ARPTable.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="228">
-          <caret line="12" column="8" selection-start-line="12" selection-start-column="8" selection-end-line="12" selection-end-column="42" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/autoconnect/GuessAttempt.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="370">
-          <caret line="94" column="32" lean-forward="true" selection-start-line="93" selection-start-column="7" selection-end-line="94" selection-end-column="32" />
+        <state relative-caret-position="175">
+          <caret line="32" column="10" selection-start-line="32" selection-start-column="10" selection-end-line="32" selection-end-column="10" />
           <folding>
             <element signature="e#0#23#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/autoconnect/main.py">
+    <entry file="file://$PROJECT_DIR$/autoconnect/TransferProject.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="266">
-          <caret line="14" lean-forward="true" selection-start-line="14" selection-end-line="14" />
+        <state relative-caret-position="95">
+          <caret line="5" column="68" lean-forward="true" selection-start-line="5" selection-start-column="68" selection-end-line="5" selection-end-column="68" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/autoconnect/ConnectionAttempt.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="228">
+          <caret line="12" column="19" lean-forward="true" selection-start-line="12" selection-start-column="19" selection-end-line="12" selection-end-column="19" />
           <folding>
             <element signature="e#0#35#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/autoconnect/RARPTable.py">
+    <entry file="file:///usr/lib/python3/dist-packages/requests/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret line="3" column="7" selection-start-line="3" selection-start-column="7" selection-end-line="3" selection-end-column="7" />
+        <state relative-caret-position="1387">
+          <caret line="76" column="30" selection-start-line="76" selection-start-column="30" selection-end-line="76" selection-end-column="30" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/autoconnect/MonitorAttempt.py">
+    <entry file="file://$PROJECT_DIR$/autoconnect/resources/credentials">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="345">
-          <caret line="35" column="18" selection-start-line="35" selection-start-column="18" selection-end-line="35" selection-end-column="18" />
+        <state relative-caret-position="57">
+          <caret line="3" column="32" selection-start-line="3" selection-start-column="32" selection-end-line="3" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/autoconnect/WifiDogCaptivePortal.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="684">
+          <caret line="36" column="21" lean-forward="true" selection-start-line="36" selection-start-column="21" selection-end-line="36" selection-end-column="21" />
           <folding>
-            <element signature="e#0#47#0" expanded="true" />
+            <element signature="e#0#22#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/autoconnect/main.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="190">
+          <caret line="10" lean-forward="true" selection-start-line="10" selection-end-line="10" />
+          <folding>
+            <element signature="e#0#35#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/autoconnect/ZeroShellCaptivePortal.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-114">
+          <caret line="26" column="41" lean-forward="true" selection-start-line="23" selection-start-column="12" selection-end-line="26" selection-end-column="41" />
+          <folding>
+            <element signature="e#0#22#0" expanded="true" />
           </folding>
         </state>
       </provider>
