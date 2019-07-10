@@ -7,6 +7,7 @@ class ZeroShellCaptivePortal:
     def __init__(self):
         self.username_field_name = None
         self.password_field_name = None
+        self.parser = AdvancedHTMLParser()
         self.domain_name = None
         self.domains = []
 
@@ -14,7 +15,7 @@ class ZeroShellCaptivePortal:
         print("Captive portal! Trying to connect . . .")
         resp = request(method='GET', url="http://clients3.google.com/generate_204")
 
-        self.find_input_fields(resp)
+        self.find_input_fields(resp.text)
 
         url = resp.url.split("?", 1)[0]
 
@@ -60,10 +61,9 @@ class ZeroShellCaptivePortal:
                     else:
                         print("No authentication key")
 
-    def find_input_fields(self, resp):
-        parser = AdvancedHTMLParser()
-        parser.parseStr(resp.text)
-        form = parser.getElementsByTagName("form")
+    def find_input_fields(self, html_content):
+        self.parser.parseStr(html_content)
+        form = self.parser.getElementsByTagName("form")
         inputs = form.getElementsByTagName("input")
         for input_field in inputs:
             if input_field.type == "text":
@@ -77,9 +77,8 @@ class ZeroShellCaptivePortal:
             self.domains.append(option.value)
 
     def find_authkey(self, html_content):
-        parser = AdvancedHTMLParser()
-        parser.parseStr(html_content)
-        authkey = parser.getElementsByName("Authenticator")
+        self.parser.parseStr(html_content)
+        authkey = self.parser.getElementsByName("Authenticator")
         if authkey is not None:
             return authkey[0].value
         else:

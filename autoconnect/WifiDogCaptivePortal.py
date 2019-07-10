@@ -8,6 +8,7 @@ class WifiDogCaptivePortal:
         self.email_field_name = None
         self.password_field_name = None
         self.token_field_name = "_token"
+        self.parser = AdvancedHTMLParser()
 
     def try_to_connect(self):
         print("Captive portal! Trying to connect . . .")
@@ -40,9 +41,8 @@ class WifiDogCaptivePortal:
                 break
 
     def find_input_fields(self, html_content):
-        parser = AdvancedHTMLParser()
-        parser.parseStr(html_content)
-        form = parser.getElementsByTagName("form")
+        self.parser.parseStr(html_content)
+        form = self.parser.getElementsByTagName("form")
         inputs = form.getElementsByTagName("input")
         for input_field in inputs:
             if input_field.type == "email":
@@ -51,9 +51,8 @@ class WifiDogCaptivePortal:
                 self.password_field_name = input_field.name
 
     def find_authkey(self, html_content):
-        parser = AdvancedHTMLParser()
-        parser.parseStr(html_content)
-        authkey = parser.getElementsByName(self.token_field_name)
+        self.parser.parseStr(html_content)
+        authkey = self.parser.getElementsByName(self.token_field_name)
         if authkey is not None:
             return authkey[0].value
         else:

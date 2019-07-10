@@ -5,6 +5,7 @@ from scapy.arch.linux import get_if_list
 from requests import *
 from ZeroShellCaptivePortal import ZeroShellCaptivePortal
 from WifiDogCaptivePortal import WifiDogCaptivePortal
+from NodogsplashCaptivePortal import NodogsplashCaptivePortal
 
 # dhcpAttempt = DHCPAttempt('wlp2s0')
 # dhcpAttempt.connect()
@@ -25,8 +26,10 @@ print(resp.url)
 if resp.is_redirect:
     # zscp = ZeroShellCaptivePortal()
     # zscp.try_to_connect()
-    wdcp = WifiDogCaptivePortal()
-    wdcp.try_to_connect()
+    # wdcp = WifiDogCaptivePortal()
+    # wdcp.try_to_connect()
+    ndscp = NodogsplashCaptivePortal()
+    ndscp.try_to_connect()
 
 else:
     print("Successfully connected!")
