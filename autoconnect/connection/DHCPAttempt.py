@@ -1,5 +1,4 @@
-from ConnectionAttempt import ConnectionAttempt
-from Interface import *
+from connection.ConnectionAttempt import ConnectionAttempt
 from scapy.all import *
 
 

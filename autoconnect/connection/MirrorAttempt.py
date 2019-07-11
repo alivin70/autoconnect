@@ -1,5 +1,5 @@
-from ConnectionAttempt import ConnectionAttempt
-from RARPTable import *
+from connection.ConnectionAttempt import ConnectionAttempt
+from util.RARPTable import *
 from scapy.all import *
 from ipaddress import *
 

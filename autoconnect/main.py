@@ -1,11 +1,5 @@
-from DHCPAttempt import DHCPAttempt
-from GuessAttempt import GuessAttempt
-from MirrorAttempt import MirrorAttempt
-from scapy.arch.linux import get_if_list
 from requests import *
-from ZeroShellCaptivePortal import ZeroShellCaptivePortal
-from WifiDogCaptivePortal import WifiDogCaptivePortal
-from NodogsplashCaptivePortal import NodogsplashCaptivePortal
+from captiveportal.NodogsplashCaptivePortal import NodogsplashCaptivePortal
 
 # dhcpAttempt = DHCPAttempt('wlp2s0')
 # dhcpAttempt.connect()

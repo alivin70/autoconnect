@@ -20,19 +20,40 @@ class NodogsplashCaptivePortal:
 
         self.find_input_fields(html)
         self.find_hidden_fields(html)
-        data = {self.username_field_name: "dick", self.password_field_name: "123456", "tok": self.tok, "redir": self.redir,
-                "authaction": self.authaction}
 
         url = resp.url.split("?", 1)[0]
-        resp = post(url, data=data)
+        f = open("resources/credentials")
 
-        html = resp.text
-        self.parser.parseStr(html)
-        self.redir = self.parser.getElementsByName("redir")[0].value
-        form = self.parser.getElementsByTagName("form")
-        url = form[1].action
-        params = {"tok": self.tok, "redir": self.redir}
-        resp = get(url, params=params)
+        for line in f:
+            credentials = line.strip().split(",")
+            username = credentials[0]
+            password = credentials[1]
+            print(username, password)
+
+            data = {self.username_field_name: username, self.password_field_name: password, "tok": self.tok, "redir": self.redir,
+                    "authaction": self.authaction}
+
+            resp = post(url, data=data)
+
+            html = resp.text
+            if 'Invalid login attempt' in html:
+                print("Wrong username or password")
+
+            else:
+                self.parser.parseStr(html)
+                self.redir = self.parser.getElementsByName("redir")[0].value
+                form = self.parser.getElementsByTagName("form")
+                url = form[1].action
+                params = {"tok": self.tok, "redir": self.redir}
+                get(url, params=params)
+
+                resp = request(method='GET', url="http://clients3.google.com/generate_204", allow_redirects=False)
+                if resp.status_code == 204:
+                    print("Successfully connected!")
+                    break
+                else:
+                    print("Unable to connect!")
+                    break
 
     def find_input_fields(self, html_content):
         self.parser.parseStr(html_content)

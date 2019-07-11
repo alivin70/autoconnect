@@ -26,6 +26,7 @@ class WifiDogCaptivePortal:
             print(username, password)
 
             data = {self.email_field_name: username, self.password_field_name: password, self.token_field_name: token}
+            #TODO url
             resp = post("http://wifidog-auth.lan/login", data=data, cookies=cookies)
 
             if 'These credentials do not match our records' in resp.text:

@@ -1,6 +1,6 @@
 from scapy.all import *
-from ConnectionAttempt import ConnectionAttempt
-from ARPTable import *
+from connection.ConnectionAttempt import ConnectionAttempt
+from util.ARPTable import *
 from ipaddress import *
 
 
