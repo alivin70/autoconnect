@@ -1,60 +1,43 @@
 from requests import *
-from AdvancedHTMLParser import *
+from captiveportal.CaptivePortalHandler import CaptivePortalHandler
 
 
-class WifiDogCaptivePortal:
+class WifiDogCaptivePortal(CaptivePortalHandler):
 
     def __init__(self):
-        self.email_field_name = None
-        self.password_field_name = None
-        self.token_field_name = "_token"
-        self.parser = AdvancedHTMLParser()
+        CaptivePortalHandler.__init__(self, "email", "_token")
 
     def try_to_connect(self):
-        print("Captive portal! Trying to connect . . .")
         resp = request(method='GET', url="http://clients3.google.com/generate_204")
         cookies = resp.cookies.get_dict()
         html = resp.text
-        self.find_input_fields(html)
-        token = self.find_authkey(html)
+        input_exist = self.find_input_fields(html)
+        token = self.find_token(html)
 
-        f = open("resources/credentials")
-        for line in f:
-            credentials = line.strip().split(",")
-            username = credentials[0]
-            password = credentials[1]
-            print(username, password)
+        if input_exist and token is not None:
+            url = resp.url.split("?", 1)[0]
+            f = open("resources/credentials")
 
-            data = {self.email_field_name: username, self.password_field_name: password, self.token_field_name: token}
-            #TODO url
-            resp = post("http://wifidog-auth.lan/login", data=data, cookies=cookies)
+            for line in f:
+                credentials = line.strip().split(",")
+                username = credentials[0]
+                password = credentials[1]
+                print(username, password)
 
-            if 'These credentials do not match our records' in resp.text:
-                print("Wrong username or password")
-                continue
+                data = {self.username_field_name: username, self.password_field_name: password, self.token_field_name: token}
+                resp = post(url, data=data, cookies=cookies)
 
-            resp = request(method='GET', url="http://clients3.google.com/generate_204", allow_redirects=False)
-            if resp.status_code == 204:
-                print("Successfully connected!")
-                break
-            else:
-                print("Unable to connect!")
-                break
+                if 'These credentials do not match our records' in resp.text:
+                    print("Wrong username or password")
+                    continue
 
-    def find_input_fields(self, html_content):
-        self.parser.parseStr(html_content)
-        form = self.parser.getElementsByTagName("form")
-        inputs = form.getElementsByTagName("input")
-        for input_field in inputs:
-            if input_field.type == "email":
-                self.email_field_name = input_field.name
-            if input_field.type == "password":
-                self.password_field_name = input_field.name
-
-    def find_authkey(self, html_content):
-        self.parser.parseStr(html_content)
-        authkey = self.parser.getElementsByName(self.token_field_name)
-        if authkey is not None:
-            return authkey[0].value
+                resp = request(method='GET', url="http://clients3.google.com/generate_204", allow_redirects=False)
+                if resp.status_code == 204:
+                    print("Successfully connected!")
+                    return True
+                else:
+                    print("Unable to connect!")
+                    return False
         else:
-            return None
+            print("Unable to connect!")
+            return False

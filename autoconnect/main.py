@@ -1,5 +1,7 @@
 from requests import *
+from captiveportal.WifiDogCaptivePortal import WifiDogCaptivePortal
 from captiveportal.NodogsplashCaptivePortal import NodogsplashCaptivePortal
+from captiveportal.ZeroShellCaptivePortal import ZeroShellCaptivePortal
 
 # dhcpAttempt = DHCPAttempt('wlp2s0')
 # dhcpAttempt.connect()
@@ -18,12 +20,15 @@ print(resp.history)
 print(resp.url)
 
 if resp.is_redirect:
-    # zscp = ZeroShellCaptivePortal()
-    # zscp.try_to_connect()
-    # wdcp = WifiDogCaptivePortal()
-    # wdcp.try_to_connect()
-    ndscp = NodogsplashCaptivePortal()
-    ndscp.try_to_connect()
+    print("Captive portal! Trying to connect . . .")
+    captive_portal_handlers = {"WifiDog": WifiDogCaptivePortal(), "Nodogsplash": NodogsplashCaptivePortal(),
+                               "ZeroShell": ZeroShellCaptivePortal()}
+
+    for item in captive_portal_handlers.keys():
+        print("Trying " + item + " . . .")
+        connected = captive_portal_handlers.get(item).try_to_connect()
+        if connected:
+            break
 
 else:
     print("Successfully connected!")
