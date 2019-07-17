@@ -16,14 +16,15 @@ class MirrorAttempt(ConnectionAttempt):
         self.acc_or = 0x00000000
         self.network = None
         self.ip = None
-        self.ignore_ip = {'0.0.0.0', '192.168.1.1', '192.168.1.49', '160.97.146.123', '160.97.144.1', '160.97.147.90',
-                         '160.97.144.3', '160.97.146.99', '160.97.145.57', '160.97.145.18', '160.97.146.217',
-                         '160.97.147.0', '160.97.146.19', '160.97.144.2', '160.97.146.1', '160.97.145.172',
-                         '160.97.144.32', '160.97.144.224', '160.97.147.136', '160.97.146.205'}
+        # self.ignore_ip = {'0.0.0.0', '192.168.1.1', '192.168.1.49', '160.97.146.123', '160.97.144.1', '160.97.147.90',
+        #                  '160.97.144.3', '160.97.146.99', '160.97.145.57', '160.97.145.18', '160.97.146.217',
+        #                  '160.97.147.0', '160.97.146.19', '160.97.144.2', '160.97.146.1', '160.97.145.172',
+        #                  '160.97.144.32', '160.97.144.224', '160.97.147.136', '160.97.146.205'}
+        self.ignore_ip = {'0.0.0.0'}
 
     def connect(self):
         self.sniff()
-        # self.rarp_table.print()
+        self.rarp_table.print()
         self.find_gateway()
         self.network_discover()
         print("Default gateway: " + str(self.gateway_ip))
@@ -83,21 +84,19 @@ class MirrorAttempt(ConnectionAttempt):
                 return
 
     def find_ip(self):
-        free_ip = None
         hosts = list(self.network.hosts())
         tmp_ip = hosts[random.randint(0, len(hosts))]
-        print(tmp_ip)
+        print("Tmp IP address to find a free IP: " + str(tmp_ip))
         for ip in hosts:
             ip_dst = str(ip)
-            print(ip_dst)
+            print("Sending arp request for IP: " + str(ip_dst))
             arp_request = self.make_arp_request(tmp_ip, ip_dst)
             arp_reply = srp1(arp_request, timeout=3, verbose=0)
             if arp_reply is not None:
                 print(arp_reply.display())
             else:
-                free_ip = ip
-                break
-        self.ip = free_ip
+                self.ip = ip
+                return
 
     def make_arp_request(self, ip_src, ip_dst):
         ether = Ether(dst="ff:ff:ff:ff:ff:ff", src=self.mac_address)
@@ -107,9 +106,8 @@ class MirrorAttempt(ConnectionAttempt):
         return pkt
 
     def sniff(self):
-        # self.packets = sniff(filter="arp || tcp", prn=self.pkt_process,
-        #                 offline="/home/nigre/Documents/Thesis/wiresharkcap-root.pcapng")
-        packets = sniff(filter="arp || tcp", prn=self.pkt_process, count=100)
+        # self.packets = sniff(filter="arp || tcp", prn=self.pkt_process, offline="/home/nigre/Documents/Thesis/wiresharkcap-root.pcapng")
+        self.packets = sniff(filter="arp || tcp", prn=self.pkt_process, count=100)
 
     def pkt_process(self, pkt):
         if ARP in pkt:

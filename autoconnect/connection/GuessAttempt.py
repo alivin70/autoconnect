@@ -14,16 +14,13 @@ class GuessAttempt(ConnectionAttempt):
         self.network = None
         self.gateway = None
         self.ip = None
-        self.ignore_ip = {'0.0.0.0', '192.168.1.1', '192.168.1.49', '160.97.146.123', '160.97.144.1', '160.97.147.90',
-                         '160.97.144.3', '160.97.146.99', '160.97.145.57', '160.97.145.18', '160.97.146.217',
-                         '160.97.147.0', '160.97.146.19', '160.97.144.2', '160.97.146.1', '160.97.145.172',
-                         '160.97.144.32', '160.97.144.224', '160.97.147.136', '160.97.146.205'}
+        self.count = 0
+        self.ignore_ip = {'0.0.0.0'}
 
     def connect(self):
         self.sniff()
-        self.arp_table.print()
-        self.network_discover()
-        self.find_gateway()
+        self.network = IPv4Network(self.network)
+        self.gateway = IPv4Address(self.gateway)
         print("Network: " + str(self.network))
         print("Default gateway: " + str(self.gateway))
         self.find_ip()
@@ -38,7 +35,8 @@ class GuessAttempt(ConnectionAttempt):
         net_address_str = str(IPv4Address(net_address))
         net_address_str += "/" + str(IPv4Address(subnet_mask))
 
-        self.network = IPv4Network(net_address_str)
+        network = net_address_str
+        return network
 
     def find_gateway(self):
         max_count = 0
@@ -47,25 +45,24 @@ class GuessAttempt(ConnectionAttempt):
             if self.arp_table.table[entry].count > max_count:
                 max_count = self.arp_table.table[entry].count
                 gateway = self.arp_table.table[entry].ip_address
-        self.gateway = IPv4Address(gateway)
+
+        return gateway
 
     def find_ip(self):
-        free_ip = None
         hosts = list(self.network.hosts())
         tmp_ip = hosts[random.randint(0, len(hosts))]
-        print(tmp_ip)
+        print("Tmp IP address to find a free IP: " + str(tmp_ip))
         for ip in hosts:
             if not self.arp_table.contains(str(ip)):
                 ip_dst = str(ip)
-                print(ip_dst)
+                print("Sending arp request for IP: " + str(ip_dst))
                 arp_request = self.make_arp_request(tmp_ip, ip_dst)
                 arp_reply = srp1(arp_request, timeout=3, verbose=0)
                 if arp_reply is not None:
                     print(arp_reply.display())
                 else:
-                    free_ip = ip
-                    break
-        self.ip = free_ip
+                    self.ip = ip
+                    return
 
     def make_arp_request(self, ip_src, ip_dst):
         ether = Ether(dst="ff:ff:ff:ff:ff:ff", src=self.mac_address)
@@ -74,10 +71,23 @@ class GuessAttempt(ConnectionAttempt):
         pkt = ether / arp
         return pkt
 
+    def stopfilter(self, x):
+        network = self.network_discover()
+        gateway = self.find_gateway()
+        if network != self.network or gateway != self.gateway:
+            self.network = network
+            self.gateway = gateway
+            self.count = 1
+        else:
+            self.count += 1
+
+        if self.count == 20:
+            return True
+        else:
+            return False
+
     def sniff(self):
-        packets = sniff(filter="arp", prn = self.arp_process,
-                        offline="/home/nigre/Documents/Thesis/wiresharkcap-root.pcapng")
-        # packets = sniff(filter="arp", prn=self.arp_process, count=100)
+        packets = sniff(filter="arp", prn=self.arp_process, stop_filter=self.stopfilter)
 
     def add_ip(self, ip_addr):
         ip = int(IPv4Address(ip_addr))

@@ -59,7 +59,7 @@ class DHCPAttempt(ConnectionAttempt):
         dhcp_request = self.make_dhcp_request(my_ip_address, server_id, xid)
         print("Send DHCP Request")
         dhcp_ack = srp1(dhcp_request, iface=self.interface, verbose=0)
-        if(dhcp_ack != None):
+        if dhcp_ack is not None:
             print("Received DHCP ACK")
             dhcp_options = dhcp_ack[DHCP].options
             subnet_mask = self.get_dhcp_option(dhcp_options, 'subnet_mask')
