@@ -86,7 +86,7 @@ class MirrorAttempt(ConnectionAttempt):
     def find_ip(self):
         hosts = list(self.network.hosts())
         tmp_ip = hosts[random.randint(0, len(hosts))]
-        print("Tmp IP address to find a free IP: " + str(tmp_ip))
+        print("Tmp IP address used to find a free IP: " + str(tmp_ip))
         for ip in hosts:
             ip_dst = str(ip)
             print("Sending arp request for IP: " + str(ip_dst))

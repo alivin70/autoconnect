@@ -13,3 +13,4 @@ class ConnectionAttempt (ABC):
     @abstractmethod
     def connect(self):
         pass
+

@@ -1,4 +1,5 @@
 from requests import *
+from scapy.arch.linux import get_if_list
 from captiveportal.WifiDogCaptivePortal import WifiDogCaptivePortal
 from captiveportal.NodogsplashCaptivePortal import NodogsplashCaptivePortal
 from captiveportal.ZeroShellCaptivePortal import ZeroShellCaptivePortal
@@ -6,32 +7,53 @@ from connection.DHCPAttempt import DHCPAttempt
 from connection.GuessAttempt import GuessAttempt
 from connection.MirrorAttempt import MirrorAttempt
 
-# dhcpAttempt = DHCPAttempt('eth0')
-# dhcpAttempt.connect()
 
-# guessAttempt = GuessAttempt('eth0')
-# guessAttempt.connect()
+interfaces = get_if_list()
+print("Available interfaces: ")
+for i in range(0, len(interfaces)):
+    print(str(i) + " - " + interfaces[i])
 
-mirrorAttempt = MirrorAttempt('eth0')
-mirrorAttempt.connect()
+i = int(input("Select an interface to connect: "))
+interface = None
+if 0 <= i < len(interfaces):
+    interface = str(interfaces[i])
+else:
+    exit(0)
 
-# TODO Check for connection (if I can reach the gateway)
+connection_methods = [DHCPAttempt(interface), GuessAttempt(interface), MirrorAttempt(interface)]
 
-# resp = request(method='GET', url="http://clients3.google.com/generate_204", allow_redirects=False)
-# print(resp.status_code)
-# print(resp.history)
-# print(resp.url)
-#
-# if resp.is_redirect:
-#     print("Captive portal! Trying to connect . . .")
-#     captive_portal_handlers = {"WifiDog": WifiDogCaptivePortal(), "Nodogsplash": NodogsplashCaptivePortal(),
-#                                "ZeroShell": ZeroShellCaptivePortal()}
-#
-#     for item in captive_portal_handlers.keys():
-#         print("Trying " + item + " . . .")
-#         connected = captive_portal_handlers.get(item).try_to_connect()
-#         if connected:
-#             break
-#
-# else:
-#     print("Successfully connected!")
+print("Connection methods: ")
+print("0 - DHCP")
+print("1 - Infer from ARP traffic")
+print("2 - Infer from TCP data traffic")
+
+i = int(input("Select a connection method: "))
+
+connected = False
+if 0 <= i < len(connection_methods):
+    connection_method = connection_methods[i]
+    connected = connection_method.connect()
+else:
+    exit(0)
+
+try:
+    resp = request(method='GET', url="http://clients3.google.com/generate_204", allow_redirects=False)
+    print(resp.status_code)
+    print(resp.history)
+    print(resp.url)
+    if resp.is_redirect:
+        print("Captive portal detected! Trying to connect . . .")
+        captive_portal_handlers = {"WifiDog": WifiDogCaptivePortal(), "Nodogsplash": NodogsplashCaptivePortal(),
+                                   "ZeroShell": ZeroShellCaptivePortal()}
+
+        for item in captive_portal_handlers.keys():
+            print("Trying " + item + " . . .")
+            connected = captive_portal_handlers.get(item).try_to_connect()
+            if connected:
+                break
+
+    else:
+        print("Successfully connected!")
+
+except ConnectionError:
+    print("Something go wrong. The request timed out!")

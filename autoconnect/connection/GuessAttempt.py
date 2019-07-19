@@ -51,7 +51,7 @@ class GuessAttempt(ConnectionAttempt):
     def find_ip(self):
         hosts = list(self.network.hosts())
         tmp_ip = hosts[random.randint(0, len(hosts))]
-        print("Tmp IP address to find a free IP: " + str(tmp_ip))
+        print("Tmp IP address used to find a free IP: " + str(tmp_ip))
         for ip in hosts:
             if not self.arp_table.contains(str(ip)):
                 ip_dst = str(ip)

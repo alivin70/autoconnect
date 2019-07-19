@@ -1,4 +1,5 @@
 from connection.ConnectionAttempt import ConnectionAttempt
+from util.Interface import *
 from scapy.all import *
 
 
@@ -48,25 +49,31 @@ class DHCPAttempt(ConnectionAttempt):
             pass
 
     def connect(self):
-        # TODO add and manage timeout
         dhcp_discover_pkt = self.make_dhcp_discover()
-        print("Send DHCP Discover")
-        dhcp_offer = srp1(dhcp_discover_pkt, iface=self.interface, verbose=0)
-        my_ip_address = dhcp_offer[BOOTP].yiaddr
-        server_id = self.get_dhcp_option(dhcp_offer[DHCP].options, 'server_id')
-        xid = dhcp_offer[BOOTP].xid
-        print("Received DHCP Offer: IP = %s" % (my_ip_address))
-        dhcp_request = self.make_dhcp_request(my_ip_address, server_id, xid)
-        print("Send DHCP Request")
-        dhcp_ack = srp1(dhcp_request, iface=self.interface, verbose=0)
-        if dhcp_ack is not None:
-            print("Received DHCP ACK")
-            dhcp_options = dhcp_ack[DHCP].options
-            subnet_mask = self.get_dhcp_option(dhcp_options, 'subnet_mask')
-            broadcast_address = self.get_dhcp_option(dhcp_options, 'broadcast_address')
-            router = self.get_dhcp_option(dhcp_options, 'router')
-            dns_server = self.get_dhcp_option(dhcp_options, 'name_server')
-            print(subnet_mask, broadcast_address, router, dns_server)
-            # setup_interface(self.interface, my_ip_address, subnet_mask)
-            # setup_default_gateway(router)
-            # setup_dns(dns_server)
+        print("Sending DHCP Discover")
+        dhcp_offer = srp1(dhcp_discover_pkt, iface=self.interface, verbose=0, timeout=5)
+        if dhcp_offer is not None:
+            my_ip_address = dhcp_offer[BOOTP].yiaddr
+            server_id = self.get_dhcp_option(dhcp_offer[DHCP].options, 'server_id')
+            xid = dhcp_offer[BOOTP].xid
+            print("Received DHCP Offer: IP = %s" % (my_ip_address))
+            dhcp_request = self.make_dhcp_request(my_ip_address, server_id, xid)
+            print("Sending DHCP Request")
+            dhcp_ack = srp1(dhcp_request, iface=self.interface, verbose=0, timeout=5)
+            if dhcp_ack is not None:
+                print("Received DHCP ACK")
+                dhcp_options = dhcp_ack[DHCP].options
+                subnet_mask = self.get_dhcp_option(dhcp_options, 'subnet_mask')
+                broadcast_address = self.get_dhcp_option(dhcp_options, 'broadcast_address')
+                router = self.get_dhcp_option(dhcp_options, 'router')
+                dns_servers = self.get_dhcp_option(dhcp_options, 'name_server')
+                print(subnet_mask, broadcast_address, router, dns_servers)
+                setup_interface(self.interface, my_ip_address, subnet_mask)
+                setup_default_gateway(router)
+                setup_dns(dns_servers)
+                return True
+            else:
+                return False
+        else:
+            print("No DHCP Server available!")
+            return False
