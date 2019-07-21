@@ -55,6 +55,10 @@ class ZeroShellCaptivePortal(CaptivePortalHandler):
                                 return False
                         else:
                             print("No authentication key")
+
+            print("Unable to connect! No credentials gained access!")
+            return False
+
         else:
             print("Unable to connect!")
             return False

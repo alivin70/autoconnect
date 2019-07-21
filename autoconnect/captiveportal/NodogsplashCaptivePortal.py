@@ -50,6 +50,10 @@ class NodogsplashCaptivePortal(CaptivePortalHandler):
                     else:
                         print("Unable to connect!")
                         return False
+
+            print("Unable to connect! No credentials gained access!")
+            return False
+
         else:
             print("Unable to connect!")
             return False
