@@ -1,42 +1,26 @@
 from scapy.all import *
-from connection.ConnectionAttempt import ConnectionAttempt
+from connection.HeuristicAttempt import HeuristicAttempt
 from util.ARPTable import *
 from ipaddress import *
+from scapy.layers.l2 import ARP
 
 
-class GuessAttempt(ConnectionAttempt):
+class BroadcastAttempt(HeuristicAttempt):
 
     def __init__(self, interface):
-        ConnectionAttempt.__init__(self, interface)
+        HeuristicAttempt.__init__(self, interface)
         self.arp_table = ARPTable()
-        self.acc_and = 0xffffffff
-        self.acc_or = 0x00000000
-        self.network = None
-        self.gateway = None
-        self.ip = None
         self.count = 0
-        self.ignore_ip = {'0.0.0.0'}
 
     def connect(self):
         self.sniff()
+        self.arp_table.print()
         self.network = IPv4Network(self.network)
         self.gateway = IPv4Address(self.gateway)
         print("Network: " + str(self.network))
         print("Default gateway: " + str(self.gateway))
-        self.find_ip()
+        self.ip = IPv4Address(self.find_ip())
         print("IP address: " + str(self.ip))
-
-    def network_discover(self):
-        # TODO Fix subnet_mask in case of ones after the first zero.
-        net_address = self.acc_and & self.acc_or
-        subnet_mask = self.acc_and ^ self.acc_or
-        subnet_mask = 0xffffffff - subnet_mask
-
-        net_address_str = str(IPv4Address(net_address))
-        net_address_str += "/" + str(IPv4Address(subnet_mask))
-
-        network = net_address_str
-        return network
 
     def find_gateway(self):
         max_count = 0
@@ -61,18 +45,10 @@ class GuessAttempt(ConnectionAttempt):
                 if arp_reply is not None:
                     print(arp_reply.display())
                 else:
-                    self.ip = ip
-                    return
+                    return ip
 
-    def make_arp_request(self, ip_src, ip_dst):
-        ether = Ether(dst="ff:ff:ff:ff:ff:ff", src=self.mac_address)
-        arp = ARP(op=1, hwsrc=self.mac_address, psrc=ip_src,
-                  hwdst="ff:ff:ff:ff:ff:ff", pdst=ip_dst)
-        pkt = ether / arp
-        return pkt
-
-    def stopfilter(self, x):
-        network = self.network_discover()
+    def stop_filter(self, x):
+        network = self.find_network()
         gateway = self.find_gateway()
         if network != self.network or gateway != self.gateway:
             self.network = network
@@ -87,12 +63,7 @@ class GuessAttempt(ConnectionAttempt):
             return False
 
     def sniff(self):
-        packets = sniff(filter="arp", prn=self.arp_process, stop_filter=self.stopfilter)
-
-    def add_ip(self, ip_addr):
-        ip = int(IPv4Address(ip_addr))
-        self.acc_and &= ip
-        self.acc_or |= ip
+        sniff(filter="arp", prn=self.arp_process, stop_filter=self.stop_filter)
 
     def arp_process(self, pkt):
         # TODO check ip with arp-request (to avoid processing IP of a different subnet)

@@ -4,8 +4,8 @@ from captiveportal.WifiDogCaptivePortal import WifiDogCaptivePortal
 from captiveportal.NodogsplashCaptivePortal import NodogsplashCaptivePortal
 from captiveportal.ZeroShellCaptivePortal import ZeroShellCaptivePortal
 from connection.DHCPAttempt import DHCPAttempt
-from connection.GuessAttempt import GuessAttempt
-from connection.MirrorAttempt import MirrorAttempt
+from connection.BroadcastAttempt import BroadcastAttempt
+from connection.DataAttempt import DataAttempt
 
 
 interfaces = get_if_list()
@@ -20,7 +20,7 @@ if 0 <= i < len(interfaces):
 else:
     exit(0)
 
-connection_methods = [DHCPAttempt(interface), GuessAttempt(interface), MirrorAttempt(interface)]
+connection_methods = [DHCPAttempt(interface), BroadcastAttempt(interface), DataAttempt(interface)]
 
 print("Connection methods: ")
 print("0 - DHCP")

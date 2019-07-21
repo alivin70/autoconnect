@@ -1,6 +1,8 @@
 from connection.ConnectionAttempt import ConnectionAttempt
 from util.Interface import *
 from scapy.all import *
+from scapy.layers.inet import IP, Ether, UDP
+from scapy.layers.dhcp import BOOTP, DHCP
 
 
 class DHCPAttempt(ConnectionAttempt):
@@ -56,7 +58,7 @@ class DHCPAttempt(ConnectionAttempt):
             my_ip_address = dhcp_offer[BOOTP].yiaddr
             server_id = self.get_dhcp_option(dhcp_offer[DHCP].options, 'server_id')
             xid = dhcp_offer[BOOTP].xid
-            print("Received DHCP Offer: IP = %s" % (my_ip_address))
+            print("Received DHCP Offer: IP = %s" % my_ip_address)
             dhcp_request = self.make_dhcp_request(my_ip_address, server_id, xid)
             print("Sending DHCP Request")
             dhcp_ack = srp1(dhcp_request, iface=self.interface, verbose=0, timeout=5)
@@ -77,3 +79,4 @@ class DHCPAttempt(ConnectionAttempt):
         else:
             print("No DHCP Server available!")
             return False
+        

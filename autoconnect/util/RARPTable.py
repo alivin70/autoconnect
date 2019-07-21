@@ -14,7 +14,7 @@ class RARPTable:
     def __init__(self):
         self.table = {}
 
-    def add_entry(self, mac_address, ip_address, in_arp):
+    def add_or_update_entry(self, mac_address, ip_address, in_arp):
         entry = self.table.get(mac_address)
         if entry is None:
             s = set()
