@@ -36,24 +36,27 @@ if 0 <= i < len(connection_methods):
 else:
     exit(0)
 
-try:
-    resp = request(method='GET', url="http://clients3.google.com/generate_204", allow_redirects=False)
-    print(resp.status_code)
-    print(resp.history)
-    print(resp.url)
-    if resp.is_redirect:
-        print("Captive portal detected! Trying to connect . . .")
-        captive_portal_handlers = {"WifiDog": WifiDogCaptivePortal(), "Nodogsplash": NodogsplashCaptivePortal(),
-                                   "ZeroShell": ZeroShellCaptivePortal()}
+if connected:
+    try:
+        resp = request(method='GET', url="http://clients3.google.com/generate_204", allow_redirects=False)
+        print(resp.status_code)
+        print(resp.history)
+        print(resp.url)
+        if resp.is_redirect:
+            print("Captive portal detected! Trying to connect . . .")
+            captive_portal_handlers = {"WifiDog": WifiDogCaptivePortal(), "Nodogsplash": NodogsplashCaptivePortal(),
+                                       "ZeroShell": ZeroShellCaptivePortal()}
 
-        for item in captive_portal_handlers.keys():
-            print("Trying " + item + " . . .")
-            connected = captive_portal_handlers.get(item).try_to_connect()
-            if connected:
-                break
+            for item in captive_portal_handlers.keys():
+                print("Trying " + item + " . . .")
+                connected = captive_portal_handlers.get(item).try_to_connect()
+                if connected:
+                    break
 
-    else:
-        print("Successfully connected!")
+        else:
+            print("Successfully connected!")
 
-except ConnectionError:
-    print("Something go wrong. The request timed out!")
+    except ConnectionError:
+        print("Something go wrong. The request timed out!")
+else:
+    print("Unable to connect!")
