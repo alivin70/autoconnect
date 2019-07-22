@@ -22,6 +22,8 @@ class BroadcastAttempt(HeuristicAttempt):
         self.ip = IPv4Address(self.find_ip())
         print("IP address: " + str(self.ip))
 
+        return self.configure_network()
+
     def find_gateway(self):
         max_count = 0
         gateway = None

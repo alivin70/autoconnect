@@ -24,6 +24,8 @@ class DataAttempt(HeuristicAttempt):
         self.ip = IPv4Address(self.find_ip())
         print("IP address: " + str(self.ip))
 
+        return self.configure_network()
+
     def find_gateway(self):
         max_count = 0
         max_mac = None
@@ -77,7 +79,6 @@ class DataAttempt(HeuristicAttempt):
                 return entry.ip_address
 
     def sniff(self):
-        # self.packets = sniff(filter="arp || tcp", prn=self.pkt_process, offline="/home/nigre/Documents/Thesis/wiresharkcap-root.pcapng")
         self.packets = sniff(filter="arp || tcp", prn=self.pkt_process, count=100)
 
     def pkt_process(self, pkt):

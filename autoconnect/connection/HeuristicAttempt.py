@@ -4,6 +4,7 @@ from ipaddress import *
 from scapy.all import *
 from scapy.layers.inet import Ether
 from scapy.layers.l2 import ARP
+from util.Interface import *
 
 
 class HeuristicAttempt (ConnectionAttempt):
@@ -53,6 +54,11 @@ class HeuristicAttempt (ConnectionAttempt):
     def connect(self):
         pass
 
-
-
-
+    def configure_network(self):
+        if self.network is not None and self.gateway is not None and self.ip is not None:
+            setup_interface(self.interface, str(self.ip), str(self.network.netmask))
+            setup_default_gateway(str(self.gateway))
+            setup_dns(str(self.gateway) + ",8.8.8.8")
+            return True
+        else:
+            return False
