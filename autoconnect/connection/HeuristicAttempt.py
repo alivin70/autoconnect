@@ -38,10 +38,23 @@ class HeuristicAttempt (ConnectionAttempt):
         pass
 
     def add_ip(self, ip_addr):
+        # arp_reply = self.check_ip(ip_addr)
+        # if arp_reply:
+        #     print("Adding IP: " + ip_addr)
         ip = int(IPv4Address(ip_addr))
         self.acc_and &= ip
         self.acc_or |= ip
         print(str(IPv4Address(self.acc_and)) + "\t" + str(IPv4Address(self.acc_or)) + "\n", end='')
+
+    def check_ip(self, ip_addr):
+        # TODO check ip with arp-request (to avoid processing IP of a different subnet)
+        tmp_ip = "0.0.0.0"
+        print("Sending arp request for IP: " + str(ip_addr))
+        arp_request = self.make_arp_request(tmp_ip, ip_addr)
+        arp_reply = srp1(arp_request, timeout=3, verbose=0)
+        if arp_reply is not None:
+            print(arp_reply.display())
+        return arp_reply is not None
 
     def make_arp_request(self, ip_src, ip_dst):
         ether = Ether(dst="ff:ff:ff:ff:ff:ff", src=self.mac_address)

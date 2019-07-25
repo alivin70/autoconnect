@@ -68,7 +68,6 @@ class BroadcastAttempt(HeuristicAttempt):
         sniff(filter="arp", prn=self.arp_process, stop_filter=self.stop_filter)
 
     def arp_process(self, pkt):
-        # TODO check ip with arp-request (to avoid processing IP of a different subnet)
         ip_src = pkt[ARP].psrc
         mac_src = pkt[ARP].hwsrc
         if ip_src not in self.ignore_ip:
