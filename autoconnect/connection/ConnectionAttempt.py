@@ -5,7 +5,7 @@ from scapy.all import *
 class ConnectionAttempt (ABC):
 
     """
-    A class used to represent a connection attempt
+    A class used to represent a Connection Attempt
 
     Attributes
     ----------
@@ -15,6 +15,11 @@ class ConnectionAttempt (ABC):
         the name of the interface to connect
     mac_address : str
         the mac address of the interface to connect
+
+    Methods
+    -------
+    connect()
+        Tries to discover connection settings analyzing network traffic
 
     """
     def __init__(self, interface):
@@ -26,13 +31,13 @@ class ConnectionAttempt (ABC):
     @abstractmethod
     def connect(self):
         """
-        Try to discover connection settings and setup the interface
+        Tries to discover connection settings analyzing network traffic
 
         Returns
         -------
         bool
-            return True if it is able to discover and set the network, the subnet-mask, the default gateway and a free IP address
-            return False otherwise
+            returns True if it is able to discover the network address, the subnet-mask, the default gateway and a free IP address
+            returns False otherwise
 
         """
         pass

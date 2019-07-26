@@ -7,7 +7,18 @@ from scapy.layers.dhcp import BOOTP, DHCP
 
 class DHCPAttempt(ConnectionAttempt):
     """
-    A class used to represent a DHCP connection attempt
+    A class used to represent a DHCP Connection Attempt
+
+    Methods
+    -------
+    make_dhcp_discover()
+        Creates a DHCPDISCOVER packet using scapy
+    make_dhcp_request()
+        Creates a DHCPREQUEST packet using scapy
+    get_dhcp_option(dhcp_options, key)
+        Extracts DHCP options by key
+    connect()
+        Tries to discover connection settings performing a DHCP handshake
 
     """
 
@@ -17,7 +28,7 @@ class DHCPAttempt(ConnectionAttempt):
 
     def make_dhcp_discover(self):
         """
-        Create a DHCPDISCOVER packet using scapy
+        Creates a DHCPDISCOVER packet using scapy
 
         Returns
         -------
@@ -35,7 +46,16 @@ class DHCPAttempt(ConnectionAttempt):
 
     def make_dhcp_request(self, my_ip_address, server_id, xid):
         """
-        Create a DHCPREQUEST packet using scapy
+        Creates a DHCPREQUEST packet using scapy
+
+        Parameters
+        ---------
+        my_ip_address : str
+            the IP address assigned by the DHCP Server
+        server_id : str
+            the DHCP Server Identification
+        xid : str
+            the DHCP Transaction id
 
         Returns
         -------
@@ -54,12 +74,11 @@ class DHCPAttempt(ConnectionAttempt):
         dhcp_request = ethernet / ip / udp / bootp / dhcp
         return dhcp_request
 
-    # Function to
     def get_dhcp_option(self, dhcp_options, key):
         """
-        Extract DHCP options by key
+        Extracts DHCP options by key
 
-        Attributes
+        Parameters
         ----------
         dhcp_options : vector of key-value pair
             DHCP options
@@ -77,8 +96,8 @@ class DHCPAttempt(ConnectionAttempt):
             for i in dhcp_options:
                 print(i)
                 if i[0] == key:
-                    # If DHCP Server Returned multiple name servers
-                    # return all as comma seperated string.
+                    # If DHCP Server returned multiple name servers
+                    # return all as comma separated string.
                     if key == 'name_server' and len(i) > 2:
                         return ",".join(i[1:])
                     # domain and hostname are binary strings,
@@ -92,15 +111,16 @@ class DHCPAttempt(ConnectionAttempt):
 
     def connect(self):
         """
-        Try to perform a DHCP handshake using scapy and setup the interface
+        Tries to perform a DHCP handshake using scapy and setup the interface with the connection settings
 
         Returns
         -------
         bool
-            return True if there is a DHCP Server and the DHCP handshake is successful
-            return False otherwise
+            returns True if there is a DHCP Server and the DHCP handshake is successful
+            returns False otherwise
 
         """
+        # DHCPDISCOVER -> DHCPOFFER -> DHCPREQUEST -> DHCPACK
         dhcp_discover_pkt = self.make_dhcp_discover()
         print("Sending DHCP Discover")
         dhcp_offer = srp1(dhcp_discover_pkt, iface=self.interface, verbose=0, timeout=5)
