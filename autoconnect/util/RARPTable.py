@@ -1,4 +1,14 @@
 class RARPTableEntry:
+    """
+    A class used to represent a RARP Table Entry.
+
+    Attributes
+    ----------
+    ip_address : str
+        IP address
+    in_arp : bool
+        flag to mark IP addresses that comes from ARP packets.
+    """
     def __init__(self, ip_address, in_arp):
         self.ip_address = ip_address
         self.in_arp = in_arp
@@ -11,10 +21,29 @@ class RARPTableEntry:
 
 
 class RARPTable:
+    """
+    A class used to represent a RARP Table
+
+    Attributes
+    ----------
+    table : dict[str, set[RARPTableEntry]]
+    """
     def __init__(self):
         self.table = {}
 
     def add_or_update_entry(self, mac_address, ip_address, in_arp):
+        """
+        Adds the IP address in the set of IP address associated with the MAC address.
+
+        Parameters
+        ---------
+        mac_address : str
+            MAC address
+        ip_address : str
+            IP address
+        in_arp : bool
+            flag to mark IP addresses that comes from ARP packets
+        """
         entry = self.table.get(mac_address)
         if entry is None:
             s = set()
@@ -25,6 +54,9 @@ class RARPTable:
             s.add(RARPTableEntry(ip_address, in_arp))
 
     def print(self):
+        """
+        Prints the RARP Table
+        """
         for mac in self.table:
             print(mac + "    ->      ", end='')
             for entry in self.table[mac]:

@@ -3,6 +3,9 @@ from captiveportal.CaptivePortalHandler import CaptivePortalHandler
 
 
 class NodogsplashCaptivePortal(CaptivePortalHandler):
+    """
+    A class used to handle the presence of Nodogsplash Captive Portal
+    """
 
     def __init__(self):
         CaptivePortalHandler.__init__(self, "text", "tok")
@@ -10,6 +13,14 @@ class NodogsplashCaptivePortal(CaptivePortalHandler):
         self.authaction = None
 
     def try_to_connect(self):
+        """
+        Tries to authenticate to the Nodogsplash Captive Portal using the Forwarding Authentication Service (FAS)
+
+        Returns
+        -------
+            returns True if the authentication was successful with some provided username and password
+            returns False otherwise
+        """
         resp = request(method='GET', url="http://clients3.google.com/generate_204")
         html = resp.text
         input_exist = self.find_input_fields(html)
@@ -59,6 +70,14 @@ class NodogsplashCaptivePortal(CaptivePortalHandler):
             return False
 
     def find_hidden_fields(self):
+        """
+        Tries to find additional hidden fields whose value are used during the authentication
+
+        Returns
+        -------
+            returns True if all the elements were founded
+            returns False otherwise
+        """
         tag_collection = self.parser.getElementsByName("redir")
         if len(tag_collection) > 0:
             self.redir = tag_collection[0].value

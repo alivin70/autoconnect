@@ -3,11 +3,22 @@ from captiveportal.CaptivePortalHandler import CaptivePortalHandler
 
 
 class WifiDogCaptivePortal(CaptivePortalHandler):
+    """
+    A class used to handle the presence of WifiDog Captive Portal
+    """
 
     def __init__(self):
         CaptivePortalHandler.__init__(self, "email", "_token")
 
     def try_to_connect(self):
+        """
+        Tries to authenticate to the WifiDog Captive Portal Authentication Server
+
+        Returns
+        -------
+            returns True if the authentication was successful with some provided username and password
+            returns False otherwise
+        """
         resp = request(method='GET', url="http://clients3.google.com/generate_204")
         cookies = resp.cookies.get_dict()
         html = resp.text

@@ -96,6 +96,7 @@ class BroadcastAttempt(HeuristicAttempt):
             free IP address
         """
         hosts = list(self.network.hosts())
+        # Gets random IP of the subnet to send ARP requests.
         tmp_ip = hosts[random.randint(0, len(hosts))]
         print("Tmp IP address used to find a free IP: " + str(tmp_ip))
         for ip in hosts:

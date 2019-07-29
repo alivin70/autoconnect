@@ -5,7 +5,7 @@ from scapy.all import *
 class ConnectionAttempt (ABC):
 
     """
-    A class used to represent a Connection Attempt
+    An abstract class used to represent a Connection Attempt
 
     Attributes
     ----------

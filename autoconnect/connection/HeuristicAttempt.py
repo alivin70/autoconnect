@@ -9,7 +9,7 @@ from util.Interface import *
 
 class HeuristicAttempt (ConnectionAttempt):
     """
-    A class used to represent an Heuristic Connection Attempt
+    An abstract class used to represent an Heuristic Connection Attempt
 
     Attributes
     ----------
