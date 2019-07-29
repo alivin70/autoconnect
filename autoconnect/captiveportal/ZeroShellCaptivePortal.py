@@ -12,6 +12,13 @@ class ZeroShellCaptivePortal(CaptivePortalHandler):
         the name of the HTML select field for the domains
     domains : str
         the values of the HTML select field for the domains
+
+    Methods
+    -------
+    try_to_connect()
+        Tries to authenticate to the ZeroShell Captive Portal
+    find_input_fields()
+        Tries to find username, password and domain HTML elements parsing the HTML page and searching for input fields within forms
     """
 
     def __init__(self):

@@ -5,6 +5,13 @@ from captiveportal.CaptivePortalHandler import CaptivePortalHandler
 class NodogsplashCaptivePortal(CaptivePortalHandler):
     """
     A class used to handle the presence of Nodogsplash Captive Portal
+
+    Methods
+    -------
+    try_to_connect()
+        Tries to authenticate to the Nodogsplash Captive Portal using the Forwarding Authentication Service (FAS)
+    find_hidden_fields()
+        Tries to find additional hidden fields whose value are used during the authentication
     """
 
     def __init__(self):

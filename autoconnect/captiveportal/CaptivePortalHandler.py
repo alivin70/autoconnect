@@ -18,6 +18,17 @@ class CaptivePortalHandler (ABC):
         the type (email/text) of the html username field
     token_field_name : str
         the name of the html token hidden field
+
+    Methods
+    -------
+    try_to_connect()
+        Tries to authenticate to the Captive Portal using the provided list of username and password
+    find_input_fields()
+        Tries to find username and password input fields parsing the HTML page and searching for input fields within forms
+    find_token()
+        Tries to find the HTML token hidden field containing the token of the session
+
+
     """
     def __init__(self, username_type, token_field_name):
         self.username_field_name = None

@@ -5,6 +5,12 @@ from captiveportal.CaptivePortalHandler import CaptivePortalHandler
 class WifiDogCaptivePortal(CaptivePortalHandler):
     """
     A class used to handle the presence of WifiDog Captive Portal
+
+    Methods
+    -------
+    try_to_connect()
+        Tries to authenticate to the WifiDog Captive Portal Authentication Server
+
     """
 
     def __init__(self):

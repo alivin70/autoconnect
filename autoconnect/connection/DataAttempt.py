@@ -19,6 +19,27 @@ class DataAttempt(HeuristicAttempt):
         list of sniffed packets
     gateway_mac : str
         gateway MAC address
+
+    Methods
+    -------
+    connect()
+        Tries to discover connection settings analyzing ARP and TCP data traffic and applying heuristics
+    find_gateway()
+        Returns the gateway IP address, that is the IP whose MAC contains more IPs in the RARP Table
+    find_ip()
+        Returns a free IP address, that is the first IP address in the subnet that does not send an ARP Reply
+    network_discover()
+        Finds the network address and the subnet mask after discovering the gateway considering:
+            - source and destination IP addresses of ARP packets
+            - destination IP address of TCP data packets whose source MAC address is the MAC address of the gateway
+            - source IP address of TCP data packets whose destination MAC address is the MAC address of the gateway
+    find_gateway_ip()
+        Given the gateway MAC address it returns the gateway IP address, that is the IP marked as seen in ARP packet in the RARPTable entry
+    arp_process()
+        Adds the source IP address and the destination IP address of the ARP packet in the RARP Table
+    tcp_process()
+        Adds the source IP address and the destination IP address of the TCP packet in the RARP Table
+
     """
 
     def __init__(self, interface):
