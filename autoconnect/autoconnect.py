@@ -6,11 +6,12 @@ from captiveportal.ZeroShellCaptivePortal import ZeroShellCaptivePortal
 from connection.DHCPAttempt import DHCPAttempt
 from connection.BroadcastAttempt import BroadcastAttempt
 from connection.DataAttempt import DataAttempt
-from util.Configuration import Configuration
-import sys
+import argparse
+from util.Options import Options
 
 
-def batch_connection(connection_methods):
+def batch_connection(interface):
+    connection_methods = [DHCPAttempt(interface), BroadcastAttempt(interface), DataAttempt(interface)]
     for attempt in connection_methods:
         connected = attempt.connect()
         if connected:
@@ -18,62 +19,46 @@ def batch_connection(connection_methods):
     return False
 
 
-def interactive_connection(connection_methods):
-    print("Connection methods: ")
-    print("0 - DHCP")
-    print("1 - Infer from ARP traffic")
-    print("2 - Infer from TCP data traffic")
+def interactive_connection(interface):
+    try:
+        print("Connection methods: ")
+        print("0 - DHCP")
+        print("1 - Infer from ARP traffic")
+        print("2 - Infer from TCP data traffic")
 
-    i = int(input("Select a connection method: "))
+        i = int(input("Select a connection method: "))
+        connection_method = None
+        if i == 0:
+            connection_method = DHCPAttempt(interface)
+        elif i == 1:
+            connection_method = BroadcastAttempt(interface)
 
-    if 0 <= i < len(connection_methods):
-        connection_method = connection_methods[i]
+        elif i == 2:
+            connection_method = DataAttempt(interface)
+        else:
+            print("Invalid option!")
+            interactive_connection(interface)
         return connection_method.connect()
-    else:
-        print("Invalid choice ! ! !")
-        interactive_connection(connection_methods)
-
-
-def print_help():
-    print("Usage:\n sudo autoconnect [path to configuration file]")
+    except KeyboardInterrupt:
+        exit(0)
 
 
 def main():
-    batch = False
-    conf = Configuration()
+    parser = argparse.ArgumentParser(description='Autoconnect: a Python tool for discovering connection settings in a LAN')
+    parser.add_argument('-i', '--interface', help="The interface to connect", type=str, choices=get_if_list(), metavar="INTERFACE")
+    parser.add_argument('-cp', '--cpcredentials', help="File path of csv Captive Portal credentials", type=argparse.FileType('r'),
+                        metavar="FILE")
+    args = parser.parse_args()
 
-    if len(sys.argv) > 1:
-        if sys.argv.__contains__("--help") or sys.argv.__contains__("-h"):
-            print_help()
-            exit(0)
-        try:
-            conf.parse_configurations(sys.argv[1])
-        except FileNotFoundError:
-            print("Configuration file not found.")
-            exit(0)
+    interface = args.__getattribute__("interface")
+    credentials = args.__getattribute__("cpcredentials")
 
-        batch = True
+    opts = Options(interface, credentials)
+
+    if opts.batch:
+        connected = batch_connection(opts.interface)
     else:
-        interfaces = get_if_list()
-        print("Available interfaces: ")
-        for i in range(0, len(interfaces)):
-            print(str(i) + " - " + interfaces[i])
-
-        i = int(input("Select an interface to connect: "))
-        if 0 <= i < len(interfaces):
-            conf.interface = str(interfaces[i])
-            batch = False
-        else:
-            exit(0)
-
-    connection_methods = [DHCPAttempt(conf.interface), BroadcastAttempt(conf.interface), DataAttempt(conf.interface)]
-    captive_portal_handlers = {"WifiDog": WifiDogCaptivePortal(), "Nodogsplash": NodogsplashCaptivePortal(),
-                               "ZeroShell": ZeroShellCaptivePortal()}
-
-    if batch:
-        connected = batch_connection(connection_methods)
-    else:
-        connected = interactive_connection(connection_methods)
+        connected = interactive_connection(opts.interface)
 
     if connected:
         try:
@@ -82,6 +67,8 @@ def main():
             print(resp.history)
             print(resp.url)
             if resp.is_redirect:
+                captive_portal_handlers = {"WifiDog": WifiDogCaptivePortal(), "Nodogsplash": NodogsplashCaptivePortal(),
+                                           "ZeroShell": ZeroShellCaptivePortal()}
                 print("Captive portal detected! Trying to connect . . .")
                 for item in captive_portal_handlers.keys():
                     print("Trying " + item + " . . .")

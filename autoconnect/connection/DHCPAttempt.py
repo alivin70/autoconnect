@@ -94,7 +94,6 @@ class DHCPAttempt(ConnectionAttempt):
         must_decode = ['hostname', 'domain', 'vendor_class_id']
         try:
             for i in dhcp_options:
-                print(i)
                 if i[0] == key:
                     # If DHCP Server returned multiple name servers
                     # return all as comma separated string.
