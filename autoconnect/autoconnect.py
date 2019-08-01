@@ -67,8 +67,9 @@ def main():
             print(resp.history)
             print(resp.url)
             if resp.is_redirect:
-                captive_portal_handlers = {"WifiDog": WifiDogCaptivePortal(), "Nodogsplash": NodogsplashCaptivePortal(),
-                                           "ZeroShell": ZeroShellCaptivePortal()}
+                captive_portal_handlers = {"WifiDog": WifiDogCaptivePortal(opts.credentials),
+                                           "Nodogsplash": NodogsplashCaptivePortal(opts.credentials),
+                                           "ZeroShell": ZeroShellCaptivePortal(opts.credentials)}
                 print("Captive portal detected! Trying to connect . . .")
                 for item in captive_portal_handlers.keys():
                     print("Trying " + item + " . . .")

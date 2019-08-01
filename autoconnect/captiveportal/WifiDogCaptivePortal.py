@@ -13,8 +13,8 @@ class WifiDogCaptivePortal(CaptivePortalHandler):
 
     """
 
-    def __init__(self):
-        CaptivePortalHandler.__init__(self, "email", "_token")
+    def __init__(self, credentials_file):
+        CaptivePortalHandler.__init__(self, "email", "_token", credentials_file)
 
     def try_to_connect(self):
         """
@@ -33,31 +33,35 @@ class WifiDogCaptivePortal(CaptivePortalHandler):
 
         if input_exist and token is not None:
             url = resp.url.split("?", 1)[0]
-            f = open("resources/credentials")
+            if self.credentials_file is not None:
+                f = open(self.credentials_file)
 
-            for line in f:
-                credentials = line.strip().split(",")
-                username = credentials[0]
-                password = credentials[1]
-                print(username, password)
+                for line in f:
+                    credentials = line.strip().split(",")
+                    username = credentials[0]
+                    password = credentials[1]
+                    print(username, password)
 
-                data = {self.username_field_name: username, self.password_field_name: password, self.token_field_name: token}
-                resp = post(url, data=data, cookies=cookies)
+                    data = {self.username_field_name: username, self.password_field_name: password, self.token_field_name: token}
+                    resp = post(url, data=data, cookies=cookies)
 
-                if 'These credentials do not match our records' in resp.text:
-                    print("Wrong username or password")
+                    if 'These credentials do not match our records' in resp.text:
+                        print("Wrong username or password")
 
-                else:
-                    resp = request(method='GET', url="http://clients3.google.com/generate_204", allow_redirects=False)
-                    if resp.status_code == 204:
-                        print("Successfully connected!")
-                        return True
                     else:
-                        print("Unable to connect!")
-                        return False
+                        resp = request(method='GET', url="http://clients3.google.com/generate_204", allow_redirects=False)
+                        if resp.status_code == 204:
+                            print("Successfully connected!")
+                            return True
+                        else:
+                            print("Unable to connect!")
+                            return False
 
-            print("Unable to connect! No credentials gained access!")
-            return False
+                print("Unable to connect! No credentials gained access!")
+                return False
+            else:
+                print("Unable to connect! You need to provide a csv credentials file!")
+                return False
 
         else:
             print("Unable to connect!")

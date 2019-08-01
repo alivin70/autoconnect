@@ -14,8 +14,8 @@ class NodogsplashCaptivePortal(CaptivePortalHandler):
         Tries to find additional hidden fields whose value are used during the authentication
     """
 
-    def __init__(self):
-        CaptivePortalHandler.__init__(self, "text", "tok")
+    def __init__(self, credentials_file):
+        CaptivePortalHandler.__init__(self, "text", "tok", credentials_file)
         self.redir = None
         self.authaction = None
 
@@ -36,42 +36,45 @@ class NodogsplashCaptivePortal(CaptivePortalHandler):
 
         if input_exist and hidden_fields_exist and token is not None:
             url = resp.url.split("?", 1)[0]
-            f = open("resources/credentials")
+            if self.credentials_file is not None:
+                f = open(self.credentials_file)
 
-            for line in f:
-                credentials = line.strip().split(",")
-                username = credentials[0]
-                password = credentials[1]
-                print(username, password)
+                for line in f:
+                    credentials = line.strip().split(",")
+                    username = credentials[0]
+                    password = credentials[1]
+                    print(username, password)
 
-                data = {self.username_field_name: username, self.password_field_name: password, self.token_field_name: token,
-                        "redir": self.redir, "authaction": self.authaction}
+                    data = {self.username_field_name: username, self.password_field_name: password, self.token_field_name: token,
+                            "redir": self.redir, "authaction": self.authaction}
 
-                resp = post(url, data=data)
+                    resp = post(url, data=data)
 
-                html = resp.text
-                if 'Invalid login attempt' in html:
-                    print("Wrong username or password")
+                    html = resp.text
+                    if 'Invalid login attempt' in html:
+                        print("Wrong username or password")
 
-                else:
-                    self.parser.parseStr(html)
-                    self.redir = self.parser.getElementsByName("redir")[0].value
-                    form = self.parser.getElementsByTagName("form")
-                    url = form[1].action
-                    params = {self.token_field_name: token, "redir": self.redir}
-                    get(url, params=params)
-
-                    resp = request(method='GET', url="http://clients3.google.com/generate_204", allow_redirects=False)
-                    if resp.status_code == 204:
-                        print("Successfully connected!")
-                        return True
                     else:
-                        print("Unable to connect!")
-                        return False
+                        self.parser.parseStr(html)
+                        self.redir = self.parser.getElementsByName("redir")[0].value
+                        form = self.parser.getElementsByTagName("form")
+                        url = form[1].action
+                        params = {self.token_field_name: token, "redir": self.redir}
+                        get(url, params=params)
 
-            print("Unable to connect! No credentials gained access!")
-            return False
+                        resp = request(method='GET', url="http://clients3.google.com/generate_204", allow_redirects=False)
+                        if resp.status_code == 204:
+                            print("Successfully connected!")
+                            return True
+                        else:
+                            print("Unable to connect!")
+                            return False
 
+                print("Unable to connect! No credentials gained access!")
+                return False
+            else:
+                print("Unable to connect! You need to provide a csv credentials file!")
+                return False
         else:
             print("Unable to connect!")
             return False

@@ -18,6 +18,8 @@ class CaptivePortalHandler (ABC):
         the type (email/text) of the html username field
     token_field_name : str
         the name of the html token hidden field
+    credentials_file : str
+        the name of the csv credentials file to try
 
     Methods
     -------
@@ -30,12 +32,13 @@ class CaptivePortalHandler (ABC):
 
 
     """
-    def __init__(self, username_type, token_field_name):
+    def __init__(self, username_type, token_field_name, credentials_file):
         self.username_field_name = None
         self.password_field_name = None
         self.parser = AdvancedHTMLParser()
         self.username_type = username_type
         self.token_field_name = token_field_name
+        self.credentials_file = credentials_file
 
     @abstractmethod
     def try_to_connect(self):
