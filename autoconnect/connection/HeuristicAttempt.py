@@ -75,6 +75,7 @@ class HeuristicAttempt (ConnectionAttempt):
         # TODO Fix subnet_mask in case of ones after the first zero.
         net_address = self.acc_and & self.acc_or
         subnet_mask = self.acc_and ^ self.acc_or
+        # print("SUBNET: " + hex(net_address) + "\t" + hex(subnet_mask))
 
         # Convert wildcard to subnet mask
         subnet_mask = 0xffffffff - subnet_mask
@@ -126,7 +127,9 @@ class HeuristicAttempt (ConnectionAttempt):
         ip = int(IPv4Address(ip_addr))
         self.acc_and &= ip
         self.acc_or |= ip
-        print(str(IPv4Address(self.acc_and)) + "\t" + str(IPv4Address(self.acc_or)) + "\n", end='')
+        # print(ip_addr + "\t" + hex(ip))
+        # print(hex(self.acc_and) + "\t" + hex(self.acc_or) + "\n", end='')
+        # print(str(IPv4Address(self.acc_and)) + "\t" + str(IPv4Address(self.acc_or)) + "\n", end='')
 
     def check_ip(self, ip_addr):
         """
