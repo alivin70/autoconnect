@@ -124,15 +124,15 @@ class HeuristicAttempt (ConnectionAttempt):
             an IP address that is present in a new packet
 
         """
-        # arp_reply = self.check_ip(ip_addr)
-        # if arp_reply:
-        #     print("Adding IP: " + ip_addr)
-        ip = int(IPv4Address(ip_addr))
-        self.acc_and &= ip
-        self.acc_or |= ip
-        # print(ip_addr + "\t" + hex(ip))
-        # print(hex(self.acc_and) + "\t" + hex(self.acc_or) + "\n", end='')
-        # print(str(IPv4Address(self.acc_and)) + "\t" + str(IPv4Address(self.acc_or)) + "\n", end='')
+        arp_reply = self.check_ip(ip_addr)
+        if arp_reply:
+            #     print("Adding IP: " + ip_addr)
+            ip = int(IPv4Address(ip_addr))
+            self.acc_and &= ip
+            self.acc_or |= ip
+            # print(ip_addr + "\t" + hex(ip))
+            # print(hex(self.acc_and) + "\t" + hex(self.acc_or) + "\n", end='')
+            # print(str(IPv4Address(self.acc_and)) + "\t" + str(IPv4Address(self.acc_or)) + "\n", end='')
 
     def check_ip(self, ip_addr):
         """

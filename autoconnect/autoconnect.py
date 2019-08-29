@@ -1,5 +1,6 @@
 from requests import *
-from scapy.arch.linux import get_if_list
+from scapy.all import *
+from scapy.layers.inet import TCP
 from captiveportal.WifiDogCaptivePortal import WifiDogCaptivePortal
 from captiveportal.NodogsplashCaptivePortal import NodogsplashCaptivePortal
 from captiveportal.ZeroShellCaptivePortal import ZeroShellCaptivePortal
@@ -11,12 +12,23 @@ from util.Options import Options
 
 
 def batch_connection(interface):
-    connection_methods = [DHCPAttempt(interface), BroadcastAttempt(interface), DataAttempt(interface)]
-    for attempt in connection_methods:
-        connected = attempt.connect()
-        if connected:
-            return True
-    return False
+    # First checks if is possible to perform a DHCP transaction. Otherwise it sniffs for 20 seconds arp and tcp packets.
+    # If the packet list is not empty and contains a TCP packet then uses DataAttempt otherwise use BroadcastAttempt.
+    dhcp_attempt = DHCPAttempt(interface)
+    if dhcp_attempt.connect():
+        return True
+
+    packets = []
+    while len(packets) == 0:
+        packets = sniff(filter="arp || tcp", timeout=20)
+
+    for pkt in packets:
+        if TCP in pkt:
+            data_attempt = DataAttempt(interface)
+            return data_attempt.connect()
+
+    broadcast_attempt = BroadcastAttempt(interface)
+    return broadcast_attempt.connect()
 
 
 def interactive_connection(interface):

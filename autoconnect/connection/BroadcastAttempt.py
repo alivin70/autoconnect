@@ -117,7 +117,7 @@ class BroadcastAttempt(HeuristicAttempt):
         """
         # Every new packet calls the arp_process function.
         # The function stop_filter is called every time a new packet arrives to decide if the sniff function must stop.
-        sniff(filter="arp", prn=self.arp_process, stop_filter=self.stop_filter)
+        sniff(filter="arp", prn=self.arp_process, stop_filter=self.stop_filter, store=0)
 
     def arp_process(self, pkt):
         """
