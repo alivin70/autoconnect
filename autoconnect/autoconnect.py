@@ -9,7 +9,8 @@ from connection.BroadcastAttempt import BroadcastAttempt
 from connection.DataAttempt import DataAttempt
 import argparse
 from util.Options import Options
-
+import logging
+from util.LogSender import LogSender
 
 def batch_connection(interface):
     # First checks if is possible to perform a DHCP transaction. Otherwise it sniffs for 20 seconds arp and tcp packets.
@@ -66,6 +67,7 @@ def main():
     credentials = args.__getattribute__("cpcredentials")
 
     opts = Options(interface, credentials)
+    logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s', filename='autoconnect.log', level=logging.INFO)
 
     if opts.batch:
         connected = batch_connection(opts.interface)
@@ -76,25 +78,34 @@ def main():
         try:
             resp = request(method='GET', url="http://clients3.google.com/generate_204", allow_redirects=False)
             print("Sending HTTP request to http://clients3.google.com/generate_204 . . .")
+            logging.info('Sending HTTP request to http://clients3.google.com/generate_204 . . .')
             print("Received HTTP response: " + str(resp.status_code))
+            logging.info("Received HTTP response: " + str(resp.status_code))
             if resp.is_redirect:
                 print("Captive portal detected! Trying to connect . . .")
+                logging.info("Captive portal detected! Trying to connect . . .")
                 captive_portal_handlers = {"WifiDog": WifiDogCaptivePortal(opts.credentials),
                                            "Nodogsplash": NodogsplashCaptivePortal(opts.credentials),
                                            "ZeroShell": ZeroShellCaptivePortal(opts.credentials)}
                 for item in captive_portal_handlers.keys():
                     print("Trying " + item + " . . .")
+                    logging.info("Trying " + item + " . . .")
                     connected = captive_portal_handlers.get(item).try_to_connect()
                     if connected:
                         break
             else:
                 print("No captive portal detected!")
+                logging.info("No captive portal detected!")
                 print("Successfully connected!")
+                logging.info("Successfully connected!")
 
         except ConnectionError:
             print("Something go wrong. The request timed out!")
     else:
         print("Unable to connect!")
+
+    ls = LogSender()
+    ls.send("nicolagreco92@gmail.com", "Autoconnect tool", "Autoconnect", "autoconnect.log", "filename")
 
 
 if __name__ == "__main__":

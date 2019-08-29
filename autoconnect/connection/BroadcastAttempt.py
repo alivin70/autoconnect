@@ -61,9 +61,12 @@ class BroadcastAttempt(HeuristicAttempt):
         self.network = IPv4Network(self.network)
         self.gateway = IPv4Address(self.gateway)
         print("Network: " + str(self.network))
+        logging.info("Network: " + str(self.network))
         print("Default gateway: " + str(self.gateway))
+        logging.info("Default gateway: " + str(self.gateway))
         self.ip = IPv4Address(self.find_ip())
         print("IP address: " + str(self.ip))
+        logging.info("IP address: " + str(self.ip))
 
         # Setup the interface
         return self.configure_network()

@@ -56,6 +56,7 @@ class ZeroShellCaptivePortal(CaptivePortalHandler):
                         realm = domain
                         zscp_redirect = "_:::_"
                         print(username, password, realm)
+                        logging.info(username, password, realm)
 
                         params = {self.username_field_name: username, self.password_field_name: password, self.domain_name: realm,
                                   'Section': 'CPAuth', 'Action': 'Authenticate', 'ZSCPRedirect': zscp_redirect}
@@ -64,6 +65,7 @@ class ZeroShellCaptivePortal(CaptivePortalHandler):
 
                         if 'Access Denied' in html:
                             print("Wrong username or password")
+                            logging.info("Wrong username or password")
 
                         else:
                             authkey = self.find_token(html)
@@ -84,9 +86,11 @@ class ZeroShellCaptivePortal(CaptivePortalHandler):
                                 resp = request(method='GET', url="http://clients3.google.com/generate_204", allow_redirects=False)
                                 if resp.status_code == 204:
                                     print("Successfully connected!")
+                                    logging.info("Successfully connected!")
                                     return True
                                 else:
                                     print("Unable to connect!")
+                                    logging.info("Unable to connect!")
                                     return False
                             else:
                                 print("No authentication key")
@@ -99,6 +103,7 @@ class ZeroShellCaptivePortal(CaptivePortalHandler):
 
         else:
             print("Unable to connect!")
+            logging.info("Unable to connect!")
             return False
 
     def find_input_fields(self, html_content):
@@ -138,6 +143,7 @@ class ZeroShellCaptivePortal(CaptivePortalHandler):
         zscp_redirect : str
             the redirection URL
         """
+        logging.info("Started Renewal-Thread")
         while True:
             sleep(self.renew_interval)
             params = {'Authenticator': authkey, 'Section': 'CPGW', 'Action': 'Renew',

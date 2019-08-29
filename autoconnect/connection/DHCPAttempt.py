@@ -122,23 +122,31 @@ class DHCPAttempt(ConnectionAttempt):
         # DHCPDISCOVER -> DHCPOFFER -> DHCPREQUEST -> DHCPACK
         dhcp_discover_pkt = self.make_dhcp_discover()
         print("Sending DHCP Discover")
+        logging.info("Sending DHCP Discover")
         dhcp_offer = srp1(dhcp_discover_pkt, iface=self.interface, verbose=0, timeout=5)
         if dhcp_offer is not None:
             my_ip_address = dhcp_offer[BOOTP].yiaddr
             server_id = self.get_dhcp_option(dhcp_offer[DHCP].options, 'server_id')
             xid = dhcp_offer[BOOTP].xid
             print("Received DHCP Offer: IP = %s" % my_ip_address)
+            logging.info("Received DHCP Offer: IP = %s" % my_ip_address)
             dhcp_request = self.make_dhcp_request(my_ip_address, server_id, xid)
             print("Sending DHCP Request")
+            logging.info("Sending DHCP Request")
             dhcp_ack = srp1(dhcp_request, iface=self.interface, verbose=0, timeout=5)
             if dhcp_ack is not None:
                 print("Received DHCP ACK")
+                logging.info("Received DHCP ACK")
                 dhcp_options = dhcp_ack[DHCP].options
                 subnet_mask = self.get_dhcp_option(dhcp_options, 'subnet_mask')
                 broadcast_address = self.get_dhcp_option(dhcp_options, 'broadcast_address')
                 router = self.get_dhcp_option(dhcp_options, 'router')
                 dns_servers = self.get_dhcp_option(dhcp_options, 'name_server')
                 print(subnet_mask, broadcast_address, router, dns_servers)
+                logging.info("Subnetmask: " + str(subnet_mask))
+                logging.info("Broadcast address: " + str(broadcast_address))
+                logging.info("Default router: " + str(router))
+                logging.info("DNS server addresses: " + str(router))
                 setup_interface(self.interface, my_ip_address, subnet_mask)
                 setup_default_gateway(router)
                 setup_dns(dns_servers)
@@ -147,5 +155,6 @@ class DHCPAttempt(ConnectionAttempt):
                 return False
         else:
             print("No DHCP Server available!")
+            logging.info("No DHCP Server available!")
             return False
         

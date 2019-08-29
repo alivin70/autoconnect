@@ -44,6 +44,7 @@ class NodogsplashCaptivePortal(CaptivePortalHandler):
                     username = credentials[0]
                     password = credentials[1]
                     print(username, password)
+                    logging.info(username, password)
 
                     data = {self.username_field_name: username, self.password_field_name: password, self.token_field_name: token,
                             "redir": self.redir, "authaction": self.authaction}
@@ -53,6 +54,7 @@ class NodogsplashCaptivePortal(CaptivePortalHandler):
                     html = resp.text
                     if 'Invalid login attempt' in html:
                         print("Wrong username or password")
+                        logging.info("Wrong username or password")
 
                     else:
                         self.parser.parseStr(html)
@@ -65,9 +67,11 @@ class NodogsplashCaptivePortal(CaptivePortalHandler):
                         resp = request(method='GET', url="http://clients3.google.com/generate_204", allow_redirects=False)
                         if resp.status_code == 204:
                             print("Successfully connected!")
+                            logging.info("Successfully connected!")
                             return True
                         else:
                             print("Unable to connect!")
+                            logging.info("Unable to connect!")
                             return False
 
                 print("Unable to connect! No credentials gained access!")
@@ -77,6 +81,7 @@ class NodogsplashCaptivePortal(CaptivePortalHandler):
                 return False
         else:
             print("Unable to connect!")
+            logging.info("Unable to connect!")
             return False
 
     def find_hidden_fields(self):

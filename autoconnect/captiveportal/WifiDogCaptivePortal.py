@@ -41,20 +41,24 @@ class WifiDogCaptivePortal(CaptivePortalHandler):
                     username = credentials[0]
                     password = credentials[1]
                     print(username, password)
+                    logging.info(username, password)
 
                     data = {self.username_field_name: username, self.password_field_name: password, self.token_field_name: token}
                     resp = post(url, data=data, cookies=cookies)
 
                     if 'These credentials do not match our records' in resp.text:
                         print("Wrong username or password")
+                        logging.info("Wrong username or password")
 
                     else:
                         resp = request(method='GET', url="http://clients3.google.com/generate_204", allow_redirects=False)
                         if resp.status_code == 204:
                             print("Successfully connected!")
+                            logging.info("Successfully connected!")
                             return True
                         else:
                             print("Unable to connect!")
+                            logging.info("Unable to connect!")
                             return False
 
                 print("Unable to connect! No credentials gained access!")
@@ -65,4 +69,5 @@ class WifiDogCaptivePortal(CaptivePortalHandler):
 
         else:
             print("Unable to connect!")
+            logging.info("Unable to connect!")
             return False

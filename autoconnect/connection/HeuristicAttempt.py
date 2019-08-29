@@ -124,15 +124,15 @@ class HeuristicAttempt (ConnectionAttempt):
             an IP address that is present in a new packet
 
         """
-        arp_reply = self.check_ip(ip_addr)
-        if arp_reply:
-            #     print("Adding IP: " + ip_addr)
-            ip = int(IPv4Address(ip_addr))
-            self.acc_and &= ip
-            self.acc_or |= ip
-            # print(ip_addr + "\t" + hex(ip))
-            # print(hex(self.acc_and) + "\t" + hex(self.acc_or) + "\n", end='')
-            # print(str(IPv4Address(self.acc_and)) + "\t" + str(IPv4Address(self.acc_or)) + "\n", end='')
+        # arp_reply = self.check_ip(ip_addr)
+        # if arp_reply:
+        #     print("Adding IP: " + ip_addr)
+        ip = int(IPv4Address(ip_addr))
+        self.acc_and &= ip
+        self.acc_or |= ip
+        # print(ip_addr + "\t" + hex(ip))
+        # print(hex(self.acc_and) + "\t" + hex(self.acc_or) + "\n", end='')
+        # print(str(IPv4Address(self.acc_and)) + "\t" + str(IPv4Address(self.acc_or)) + "\n", end='')
 
     def check_ip(self, ip_addr):
         """
@@ -153,11 +153,13 @@ class HeuristicAttempt (ConnectionAttempt):
 
         tmp_ip = "0.0.0.0"
         print("Sending ARP request for IP: " + str(ip_addr))
+        logging.info("Sending ARP request for IP: " + str(ip_addr))
         arp_request = self.make_arp_request(tmp_ip, ip_addr)
         arp_reply = srp1(arp_request, timeout=3, verbose=0)
         if arp_reply is not None:
             # print(arp_reply.display())
             print("Received ARP reply from IP: " + str(ip_addr))
+            logging.info("Received ARP reply from IP: " + str(ip_addr))
         return arp_reply is not None
 
     def make_arp_request(self, ip_src, ip_dst):

@@ -1,3 +1,6 @@
+import logging
+
+
 class ARPTableEntry:
     """
     A class used to represent an ARP Table Entry.
@@ -58,9 +61,11 @@ class ARPTable:
         Prints the ARP Table
         """
         print("\n")
+        logging.info("\n")
         for entry in self.table:
             print(self.table[entry].ip_address + "\t" + self.table[entry].mac_address + "\t" +
                   str(self.table[entry].count))
+            logging.info(self.table[entry].ip_address + "\t" + self.table[entry].mac_address + "\t" + str(self.table[entry].count))
 
     def contains(self, ip_address):
         """
