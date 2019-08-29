@@ -86,30 +86,6 @@ class BroadcastAttempt(HeuristicAttempt):
 
         return gateway
 
-    def find_ip(self):
-        """
-        Returns a free IP address, that is the first IP address in the subnet that does not send an ARP Reply.
-
-        Returns
-        -------
-        IPv4Address
-            free IP address
-        """
-        hosts = list(self.network.hosts())
-        # Gets random IP of the subnet to send ARP requests.
-        tmp_ip = hosts[random.randint(0, len(hosts))]
-        print("Tmp IP address used to find a free IP: " + str(tmp_ip))
-        for ip in hosts:
-            if not self.arp_table.contains(str(ip)):
-                ip_dst = str(ip)
-                print("Sending arp request for IP: " + str(ip_dst))
-                arp_request = self.make_arp_request(tmp_ip, ip_dst)
-                arp_reply = srp1(arp_request, timeout=3, verbose=0)
-                if arp_reply is not None:
-                    print(arp_reply.display())
-                else:
-                    return ip
-
     def stop_filter(self, x):
         """
         Decides when to stop the discovery process.

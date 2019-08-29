@@ -96,29 +96,6 @@ class DataAttempt(HeuristicAttempt):
             self.gateway_mac = max_mac
             return self.find_gateway_ip(max_mac)
 
-    def find_ip(self):
-        """
-        Returns a free IP address, that is the first IP address in the subnet that does not send an ARP Reply.
-
-        Returns
-        -------
-        IPv4Address
-            free IP address
-        """
-        hosts = list(self.network.hosts())
-        # Gets random IP of the subnet to send ARP requests.
-        tmp_ip = hosts[random.randint(0, len(hosts))]
-        print("Tmp IP address used to find a free IP: " + str(tmp_ip))
-        for ip in hosts:
-            ip_dst = str(ip)
-            print("Sending arp request for IP: " + str(ip_dst))
-            arp_request = self.make_arp_request(tmp_ip, ip_dst)
-            arp_reply = srp1(arp_request, timeout=3, verbose=0)
-            if arp_reply is not None:
-                print(arp_reply.display())
-            else:
-                return ip
-
     def network_discover(self):
         """
         Finds the network address and the subnet mask after discovering the gateway considering:

@@ -63,21 +63,20 @@ def main():
     if connected:
         try:
             resp = request(method='GET', url="http://clients3.google.com/generate_204", allow_redirects=False)
-            print(resp.status_code)
-            print(resp.history)
-            print(resp.url)
+            print("Sending HTTP request to http://clients3.google.com/generate_204 . . .")
+            print("Received HTTP response: " + str(resp.status_code))
             if resp.is_redirect:
+                print("Captive portal detected! Trying to connect . . .")
                 captive_portal_handlers = {"WifiDog": WifiDogCaptivePortal(opts.credentials),
                                            "Nodogsplash": NodogsplashCaptivePortal(opts.credentials),
                                            "ZeroShell": ZeroShellCaptivePortal(opts.credentials)}
-                print("Captive portal detected! Trying to connect . . .")
                 for item in captive_portal_handlers.keys():
                     print("Trying " + item + " . . .")
                     connected = captive_portal_handlers.get(item).try_to_connect()
                     if connected:
                         break
-
             else:
+                print("No captive portal detected!")
                 print("Successfully connected!")
 
         except ConnectionError:

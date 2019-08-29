@@ -58,7 +58,7 @@ class HeuristicAttempt (ConnectionAttempt):
         self.network = None
         self.gateway = None
         self.ip = None
-        self.ignore_ip = {'0.0.0.0'}
+        self.ignore_ip = {'0.0.0.0', '255.255.255.255'}
 
     def find_network(self):
         """
@@ -97,17 +97,20 @@ class HeuristicAttempt (ConnectionAttempt):
         """
         pass
 
-    @abstractmethod
     def find_ip(self):
         """
-        Finds a free IP address through ARP Requests
+        Returns a free IP address, that is the first IP address in the subnet that does not send an ARP Reply to the ARP Probe.
 
         Returns
         -------
         str
             free IP Address
         """
-        pass
+        hosts = list(self.network.hosts())
+        for ip in hosts:
+            ip_dst = str(ip)
+            if not self.check_ip(ip_dst):
+                return ip
 
     def add_ip(self, ip_addr):
         """
@@ -133,7 +136,7 @@ class HeuristicAttempt (ConnectionAttempt):
 
     def check_ip(self, ip_addr):
         """
-        Checks if the IP address is in the subnet through an ARP REQUEST to avoid processing IP of a different subnet
+        Checks if the IP address is in the subnet through ARP PROBE to avoid processing IP of a different subnet
 
         Parameters
         ----------
@@ -147,13 +150,14 @@ class HeuristicAttempt (ConnectionAttempt):
             returns False otherwise
 
         """
-        # TODO check ip with arp-request (to avoid processing IP of a different subnet)
+
         tmp_ip = "0.0.0.0"
-        print("Sending arp request for IP: " + str(ip_addr))
+        print("Sending ARP request for IP: " + str(ip_addr))
         arp_request = self.make_arp_request(tmp_ip, ip_addr)
         arp_reply = srp1(arp_request, timeout=3, verbose=0)
         if arp_reply is not None:
-            print(arp_reply.display())
+            # print(arp_reply.display())
+            print("Received ARP reply from IP: " + str(ip_addr))
         return arp_reply is not None
 
     def make_arp_request(self, ip_src, ip_dst):
