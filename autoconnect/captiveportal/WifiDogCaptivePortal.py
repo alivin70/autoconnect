@@ -41,7 +41,7 @@ class WifiDogCaptivePortal(CaptivePortalHandler):
                     username = credentials[0]
                     password = credentials[1]
                     print(username, password)
-                    logging.info(username, password)
+                    logging.info(str(username) + " " + str(password))
 
                     data = {self.username_field_name: username, self.password_field_name: password, self.token_field_name: token}
                     resp = post(url, data=data, cookies=cookies)

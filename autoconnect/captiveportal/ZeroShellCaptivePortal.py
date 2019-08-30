@@ -56,7 +56,7 @@ class ZeroShellCaptivePortal(CaptivePortalHandler):
                         realm = domain
                         zscp_redirect = "_:::_"
                         print(username, password, realm)
-                        logging.info(username, password, realm)
+                        logging.info(str(username) + " " + str(password) + " " + str(realm))
 
                         params = {self.username_field_name: username, self.password_field_name: password, self.domain_name: realm,
                                   'Section': 'CPAuth', 'Action': 'Authenticate', 'ZSCPRedirect': zscp_redirect}
